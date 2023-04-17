@@ -1,14 +1,15 @@
+import Link from 'next/link';
 import React from 'react'
 
-const RestaurantDetails = () => {
+const RestaurantDetailsPage = () => {
   return (
     <main className="bg-gray-100 min-h-screen w-screen">
       <main className="max-w-screen-2xl m-auto bg-white">
         {/* NAVBAR */}
         <nav className="bg-white p-2 flex justify-between">
-          <a href="" className="font-bold text-gray-700 text-2xl">
-            {" "} OpenTable{" "}
-          </a>
+          <Link href="/" className="font-bold text-gray-700 text-2xl">
+            OpenTable
+          </Link>
           <div>
             <div className="flex">
               <button
@@ -35,8 +36,8 @@ const RestaurantDetails = () => {
           <div className="bg-white w-[70%] rounded p-3 shadow text-black">
             {/* RESTAURANT NAVBAR */}
             <nav className="flex text-reg border-b border-gray-500 pb-2">
-              <a href="" className="mr-7">Overview</a>
-              <a href="" className="mr-7">Menu</a>
+              <Link href="/restaurant/milestones-grill" className="mr-7">Overview</Link>
+              <Link href="/restaurant/milestones-grill/menu" className="mr-7">Menu</Link>
             </nav>
             {/* RESTAURANT NAVBAR */}
             {/* TITLE */}
@@ -173,4 +174,4 @@ const RestaurantDetails = () => {
   )
 }
 
-export default RestaurantDetails
+export default RestaurantDetailsPage;

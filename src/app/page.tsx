@@ -1,6 +1,4 @@
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import Link from 'next/link';
 import NavBar from './components/NavBar';
 import Header from './components/Header';
 import RestaurantCard from './components/RestaurantCard';

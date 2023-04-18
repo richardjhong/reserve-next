@@ -1,4 +1,3 @@
-import React from 'react'
 import NavBar from '../components/NavBar';
 import SearchHeader from './components/Header';
 import Sidebar from './components/Sidebar';

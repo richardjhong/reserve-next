@@ -1,5 +1,8 @@
-import NavBar from './components/NavBar'
-import './globals.css'
+import Footer from './components/Footer';
+import NavBar from './components/NavBar';
+import './globals.css';
+import 'react-tooltip/dist/react-tooltip.css';
+
 
 export const metadata = {
   title: 'OpenTable',
@@ -14,13 +17,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <main className="bg-gray-200 min-h-screen w-screen">
+        <main className="bg-gray-200 min-h-screen w-screen h-90vh">
          <main className="max-w-screen-2xl m-auto bg-white">
           <NavBar />
           {children}
           </main>
         </main>
+        <Footer />
       </body>
     </html>
   )
 }
+
+

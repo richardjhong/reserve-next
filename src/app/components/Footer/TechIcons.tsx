@@ -1,5 +1,4 @@
 "use client";
-
 import { websiteTechStack } from './FooterData';
 import { Tooltip } from 'react-tooltip'
 

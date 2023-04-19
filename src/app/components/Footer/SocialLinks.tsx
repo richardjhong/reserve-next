@@ -1,5 +1,4 @@
 "use client";
-
 import { socialLinks } from './FooterData';
 
 const SocialLinks = () => {
@@ -22,4 +21,4 @@ const SocialLinks = () => {
   )
 }
 
-export default SocialLinks
+export default SocialLinks;

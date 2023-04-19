@@ -15,29 +15,29 @@ const main = async () => {
   // await prisma.user.deleteMany();
 
   await prisma.location.createMany({
-    data: [{ name: "Ottawa" }, { name: "Toronto" }, { name: "Niagara" }],
+    data: [{ name: "ottawa" }, { name: "toronto" }, { name: "niagara" }],
   });
 
   await prisma.cuisine.createMany({
-    data: [{ name: "Indian" }, { name: "Italian" }, { name: "Mexican" }],
+    data: [{ name: "indian" }, { name: "italian" }, { name: "mexican" }],
   });
 
   const locations = await prisma.location.findMany();
   const cuisines = await prisma.cuisine.findMany();
 
   const indianCuisineId =
-    cuisines.find((cuisine) => cuisine.name === "Indian")?.id || 1;
+    cuisines.find((cuisine) => cuisine.name === "indian")?.id || 1;
   const mexicanCuisineId =
-    cuisines.find((cuisine) => cuisine.name === "Mexican")?.id || 1;
+    cuisines.find((cuisine) => cuisine.name === "mexican")?.id || 1;
   const italianCuisineId =
-    cuisines.find((cuisine) => cuisine.name === "Italian")?.id || 1;
+    cuisines.find((cuisine) => cuisine.name === "italian")?.id || 1;
 
   const ottawaLocationId =
-    locations.find((location) => location.name === "Ottawa")?.id || 1;
+    locations.find((location) => location.name === "ottawa")?.id || 1;
   const torontoLocationId =
-    locations.find((location) => location.name === "Toronto")?.id || 1;
+    locations.find((location) => location.name === "toronto")?.id || 1;
   const niagaraLocationId =
-    locations.find((location) => location.name === "Niagara")?.id || 1;
+    locations.find((location) => location.name === "niagara")?.id || 1;
 
   await prisma.restaurant.createMany({
     data: [

@@ -24,7 +24,7 @@ const RestaurantCard = ({ restaurant }: Props) => {
           <div className="flex text-reg font-light">
             <p className="mr-3 capitalize">{cuisine.name}</p>
             <Price price={price}/>
-            <p>{location.name}</p>
+            <p className="capitalize">{location.name}</p>
           </div>
           <p className="text-sm mt-1 font-bold">Booked 3 times today</p>
         </div>
@@ -33,4 +33,4 @@ const RestaurantCard = ({ restaurant }: Props) => {
   )
 }
 
-export default RestaurantCard
+export default RestaurantCard;

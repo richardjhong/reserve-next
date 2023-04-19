@@ -4,7 +4,7 @@ import { socialLinks } from './FooterData';
 import Image from 'mui-image';
 
 const ProfileImage = () => {
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState('');
 
   useEffect(() => {
     const fetchProfileImage = async (): Promise<void> => {
@@ -17,9 +17,9 @@ const ProfileImage = () => {
 
   return (
     <Image
-      width="100px" 
+      width='100px' 
       height='100px' 
-      src={profileImage!} 
+      src={profileImage} 
       alt={`${socialLinks.username} profile`} 
       className="w-32 h-32 rounded-full"
     />

@@ -4,7 +4,7 @@ import Price from './Price';
 
 interface Props {
   restaurant: RestaurantCardType;
-  id: string;
+  key: string;
 };
 
 const RestaurantCard = ({ restaurant }: Props) => {

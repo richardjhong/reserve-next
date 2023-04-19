@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { socialLinks } from './FooterData';
 import Image from 'mui-image';
 
@@ -27,4 +26,4 @@ const ProfileImage = () => {
   )
 }
 
-export default ProfileImage
+export default ProfileImage;

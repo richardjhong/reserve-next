@@ -20,11 +20,7 @@ const Price = ({price}: {price: PRICE}) => {
         );
 
       case (PRICE.EXPENSIVE):
-        return (
-          <>
-            <span>$$$$</span>
-          </>
-        );
+        return <span>$$$$</span>
 
       default:
         return;

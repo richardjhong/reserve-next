@@ -18,16 +18,64 @@ export interface CityRestaurantType {
   slug: string;
 }
 
-
 interface CityDataType {
   restaurants: CityRestaurantType[];
   cuisines: Cuisine[];
   locations: Location[];
 }
 
+interface SearchParams {
+  city?: string;
+  cuisine?: string;
+  price?: PRICE;
+}
+
+interface WhereParams {
+  location?: {
+    name: {
+      equals: string;
+    }
+  },
+  cuisine?: {
+    name: {
+      equals: string;
+    }
+  },
+  price?: {
+    equals: PRICE;
+  }
+}
+
 const prisma = new PrismaClient();
 
-const fetchSearchData = async (city: string | undefined): Promise<CityDataType> => {
+const fetchSearchData = async (searchParams: SearchParams): Promise<CityDataType> => {
+  const where: WhereParams = {};
+
+  if (searchParams.city) {
+    const location = {
+      name: {
+        equals: searchParams.city.toLowerCase()
+      }
+    }
+    where.location = location;
+  };
+
+  if (searchParams.cuisine) {
+    const cuisine = {
+      name: {
+        equals: searchParams.cuisine.toLowerCase()
+      }
+    }
+    where.cuisine = cuisine;
+  };
+
+  if (searchParams.price) {
+    const price = {
+      equals: searchParams.price
+    }
+    where.price = price;
+  };
+
   const select = {
     id: true,
     name: true,
@@ -42,22 +90,11 @@ const fetchSearchData = async (city: string | undefined): Promise<CityDataType> 
 
   const locations = await prisma.location.findMany();
 
-  let restaurants;
+  const restaurants = await prisma.restaurant.findMany({
+    where,
+    select
+  });    
 
-  if (!city) {
-    restaurants = await prisma.restaurant.findMany({ select });
-  } else {
-    restaurants = await prisma.restaurant.findMany({
-      where: {
-        location: {
-          name: {
-            equals: city.toLowerCase()
-          }
-        }
-      },
-      select
-    });    
-  };
   
   return {
     restaurants,
@@ -66,15 +103,15 @@ const fetchSearchData = async (city: string | undefined): Promise<CityDataType> 
   };
 };
 
-const SearchPage = async ({searchParams}: {searchParams: { city: string }}) => {
-  const data = await fetchSearchData(searchParams.city);
+const SearchPage = async ({searchParams}: {searchParams: SearchParams }) => {
+  const data = await fetchSearchData(searchParams);
   const { restaurants, cuisines, locations} = data;
 
   return (
     <>
       <SearchHeader />
       <div className="flex py-4 m-auto w-2/3 justify-between items-start text-black">
-        <Sidebar cuisines={cuisines} locations={locations} />
+        <Sidebar cuisines={cuisines} locations={locations} searchParams={searchParams}/>
         <div className="w-5/6">
           {restaurants.length ? 
           restaurants.map((restaurant, i) => (

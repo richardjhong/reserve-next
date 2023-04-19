@@ -33,16 +33,17 @@ const fetchRestaurants = async (): Promise<RestaurantCardType[]> => {
 const Home = async () => {
   const restaurants = await fetchRestaurants();
 
-  console.log({ restaurants });
   return (
-    <main>
-      <Header />
-      <div className="py-3 px-36 mt-10 flex flex-wrap text-black">
-        {restaurants.map((restaurant, i) => (
-          <RestaurantCard restaurant={restaurant} id={`restaurant.name-${i}`}/>
-        ))}
-      </div>
-    </main>
+    <>
+      <main>
+        <Header />
+        <div className="py-3 px-36 mt-10 flex flex-wrap text-black">
+          {restaurants.map((restaurant, i) => (
+            <RestaurantCard restaurant={restaurant} key={`restaurant.name-${i}`}/>
+          ))}
+        </div>
+      </main>
+    </>
   );
 };
 

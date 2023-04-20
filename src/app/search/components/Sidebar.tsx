@@ -1,7 +1,7 @@
 import { Cuisine, Location, PRICE } from "@prisma/client";
 import Link from "next/link";
 
-interface Props {
+interface SidebarProps {
   cuisines: Cuisine[];
   locations: Location[];
   searchParams: { 
@@ -11,7 +11,7 @@ interface Props {
   }
 };
 
-const Sidebar = ({ cuisines, locations, searchParams }: Props) => {
+const Sidebar = ({ cuisines, locations, searchParams }: SidebarProps) => {
   const prices = [
     {
       price: PRICE.CHEAP,

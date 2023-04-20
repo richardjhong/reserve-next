@@ -4,12 +4,12 @@ import Price from '@/app/components/Price';
 import { calculateReviewRatingAverage } from '../../../../utils/calculateReviewRatingAverage';
 import Stars from '@/app/components/Stars';
 
-interface Props {
+interface SearchRestaurantCardProps {
   restaurant: CityRestaurantType;
   key: string;
 };
 
-const SearchRestaurantCard = ({ restaurant }: Props) => {
+const SearchRestaurantCard = ({ restaurant }: SearchRestaurantCardProps) => {
   const { id, name, main_image, price, cuisine, location, slug, reviews } = restaurant;
 
   const renderRatingText = () => {
@@ -51,4 +51,4 @@ const SearchRestaurantCard = ({ restaurant }: Props) => {
   )
 }
 
-export default SearchRestaurantCard
+export default SearchRestaurantCard;

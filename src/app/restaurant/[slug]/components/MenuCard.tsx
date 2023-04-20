@@ -1,6 +1,10 @@
 import { Item } from "@prisma/client";
 
-const MenuCard = ({item}: {item: Item}) => {
+interface MenuCardProps {
+  item: Item;
+}
+
+const MenuCard = ({item}: MenuCardProps) => {
   const { name, description, price } = item;
   return (
     <div className="border border-gray-300 rounded p-3 w-[49%] mb-3">

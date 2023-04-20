@@ -1,7 +1,11 @@
 import { Item } from "@prisma/client";
 import MenuCard from "./MenuCard";
 
-const Menu = ({menu}: {menu: Item[]}) => {
+interface MenuProps {
+  menu: Item[];
+}
+
+const Menu = ({menu}: MenuProps) => {
   return (
       <main className="bg-white mt-5">
       <div>

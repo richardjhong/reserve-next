@@ -1,4 +1,8 @@
-const Images = ({images}: {images: string[]}) => {
+interface ImagesProps {
+  images: string[];
+}
+
+const Images = ({images}: ImagesProps) => {
 
   return (
     <div>

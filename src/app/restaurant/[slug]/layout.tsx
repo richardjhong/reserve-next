@@ -1,12 +1,14 @@
 import Header from "./components/Header";
 import React from "react";
 
-interface Props {
+interface RestaurantLayoutProps {
   children: React.ReactNode;
-  params: {slug: string}
+  params: {
+    slug: string;
+  }
 };
 
-const RestaurantLayout: React.FC<Props> = ({ children, params }) => {
+const RestaurantLayout = ({ children, params }: RestaurantLayoutProps) => {
   return (
     <main>
       <Header name={params.slug} />

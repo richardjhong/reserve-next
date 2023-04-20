@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { RestaurantCardType } from '../page'
+import { RestaurantCardType } from '../app/page'
 import Price from './Price';
 import Stars from './Stars';
 

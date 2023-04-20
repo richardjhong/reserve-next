@@ -1,6 +1,10 @@
-import Link from 'next/link'
+import Link from 'next/link';
 
-const RestaurantNavBar = ({slug}: {slug: string}) => {
+interface RestaurantNavBarProps {
+  slug: string;
+}
+
+const RestaurantNavBar = ({slug}: RestaurantNavBarProps) => {
   return (
     <nav className="flex text-reg border-b border-gray-500 pb-2">
       <Link href={`/restaurant/${slug}`} className="mr-7">Overview</Link>

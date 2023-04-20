@@ -1,4 +1,8 @@
-const Header = ({name}: {name: string}) => {
+interface HeaderProps {
+  name: string;
+}
+
+const Header = ({name}: HeaderProps) => {
   const renderTitle = () => {
     const nameArray = name.split('-');
     nameArray[nameArray.length - 1] = `(${nameArray[nameArray.length - 1]})`;

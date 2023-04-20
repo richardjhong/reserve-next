@@ -1,12 +1,12 @@
 import Stars from "@/app/components/Stars";
 import { Review } from "@prisma/client";
 
-interface Props {
+interface ReviewCardProps {
   review: Review;
   id: number;
 }
 
-const ReviewCard = ({review, id}: Props) => {
+const ReviewCard = ({review, id}: ReviewCardProps) => {
   const { first_name, last_name, text, rating } = review;
 
   return (

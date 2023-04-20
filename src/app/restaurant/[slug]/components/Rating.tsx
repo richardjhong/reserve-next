@@ -2,7 +2,11 @@ import { Review } from "@prisma/client";
 import { calculateReviewRatingAverage } from "../../../../../utils/calculateReviewRatingAverage";
 import Stars from "@/app/components/Stars";
 
-const Rating = ({reviews}: {reviews: Review[]}) => {
+interface RatingProps {
+  reviews: Review[];
+}
+
+const Rating = ({reviews}: RatingProps) => {
   return (
     <div className="flex items-end">
       <div className="ratings mt-2 flex items-center">

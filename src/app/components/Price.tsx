@@ -1,6 +1,10 @@
 import { PRICE } from "@prisma/client";
 
-const Price = ({price}: {price: PRICE}) => {
+interface PriceProps {
+  price: PRICE;
+};
+
+const Price = ({price}: PriceProps) => {
   const renderPrice = () => {
     switch (price) {
       case (PRICE.CHEAP):

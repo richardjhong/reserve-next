@@ -3,12 +3,12 @@ import { RestaurantCardType } from '../page'
 import Price from './Price';
 import Stars from './Stars';
 
-interface Props {
+interface RestaurantCardProps {
   restaurant: RestaurantCardType;
   key: string;
 };
 
-const RestaurantCard = ({ restaurant }: Props) => {
+const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
   const { name, main_image, cuisine, location, price, slug, reviews } = restaurant;
   return (
     <div className="w-64 h-72 m-3 rounded overflow-hidden border cursor-pointer">

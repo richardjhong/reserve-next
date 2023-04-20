@@ -1,7 +1,11 @@
 import { Review } from "@prisma/client";
 import ReviewCard from "./ReviewCard";
 
-const Reviews = ({reviews}: { reviews: Review[] }) => {
+interface ReviewsProps {
+  reviews: Review[];
+}
+
+const Reviews = ({reviews}: ReviewsProps) => {
   const reviewsText = () => {
     switch (reviews.length) {
       case 0:

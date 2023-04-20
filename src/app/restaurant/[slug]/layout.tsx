@@ -10,7 +10,7 @@ const RestaurantLayout: React.FC<Props> = ({ children, params }) => {
   return (
     <main>
       <Header name={params.slug} />
-      <div className="flex m-auto w-2/3 justify-between items-start 0 -mt-11">
+      <div className="flex m-auto w-2/3 justify-between items-start -mt-11">
         {children}
       </div>
     </main>

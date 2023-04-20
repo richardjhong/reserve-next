@@ -1,13 +1,27 @@
+import { Review } from "@prisma/client";
 import ReviewCard from "./ReviewCard";
 
-const Reviews = () => {
+const Reviews = ({reviews}: { reviews: Review[] }) => {
+  const reviewsText = () => {
+    switch (reviews.length) {
+      case 0:
+        return "No reviews yet";
+      case 1:
+        return "What 1 person is saying";
+      default: 
+        return `What ${reviews.length} people are saying`;
+    };
+  };
+
   return (
     <div>
       <h1 className="font-bold text-3xl mt-10 mb-7 border-b border-gray-500 pb-5">
-        What 100 people are saying
+        {reviewsText()}
       </h1>
       <div>
-        <ReviewCard />
+        {reviews.map((review, i) => (
+          <ReviewCard review={review} id={review.id} />
+        ))}
       </div>
     </div>
   )

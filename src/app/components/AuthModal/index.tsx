@@ -67,8 +67,6 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
   const handleClick = async () => {
     if (isSignin) {
       if (!loginLoading) {
-        if (loginError) console.log(loginError);
-        console.log('testing');
         const loginResult = await login({
           variables: {
               input: {
@@ -77,7 +75,6 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
               } as ValidateLoginInput
             }
         });
-        console.log('hi there', loginResult.data?.loginUser.token);
       }
     }
   };

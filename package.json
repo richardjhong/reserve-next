@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -31,10 +32,15 @@
     "react-icons": "^4.8.0",
     "react-tooltip": "^5.11.1",
     "tailwindcss": "3.3.1",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "validator": "^13.9.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "3.3.0",
+    "@graphql-codegen/typescript": "3.0.3",
+    "@graphql-codegen/typescript-resolvers": "3.2.0",
     "@types/mui-image": "^1.0.1",
+    "@types/validator": "^13.7.15",
     "ts-node": "^10.9.1"
   }
 }

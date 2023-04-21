@@ -76,7 +76,7 @@ export const resolvers: Resolvers = {
         throw new GraphQLError('Failed to register user: ' + err.message);
       }
     },
-    validateLogin: async (_, { input }, { req }) => {
+    validateLogin: async (_, { input }) => {
       try {
         const { email, password } = input;
 

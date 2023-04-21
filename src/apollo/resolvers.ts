@@ -2,7 +2,7 @@ import { Resolvers } from '@/generated/graphql-backend';
 import { PrismaClient } from '@prisma/client';
 import { GraphQLError } from 'graphql'
 import bcrypt from 'bcrypt';
-import { assignToken, validateInput } from '../../utils/apiHelpers';
+import { assignToken, authorizedUser, validateInput } from '../../utils/authHelpers';
 
 const prisma = new PrismaClient();
 
@@ -15,6 +15,19 @@ export const resolvers: Resolvers = {
       } catch (err) {
         throw new GraphQLError('Failed to fetch all users');
       }
+    },
+    validUser: async (_parent, _args, { req }) => {
+      const bearerToken = req.headers.get('authorization') as string;
+
+      return authorizedUser(bearerToken);
+    }
+  },
+  ValidUserResult: {
+    __resolveType(obj) {
+      if (obj.type === "Error") {
+        return "ValidUserError";
+      }
+      return "ValidUserSuccess";
     }
   },
   Mutation: {

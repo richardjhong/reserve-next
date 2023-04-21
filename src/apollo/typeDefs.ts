@@ -10,6 +10,14 @@ export const typeDefs = gql`
     password: String!
   }
 
+  type FilteredUser {
+    id: Int
+    first_name: String
+    last_name: String
+    email: String
+    city: String
+  }
+
   input RegisterUserInput {
     first_name: String!
     last_name: String!
@@ -25,6 +33,19 @@ export const typeDefs = gql`
     token: ID!
   }
 
+  union ValidUserResult = ValidUserSuccess | ValidUserError
+
+  type ValidUserError {
+    status: Int!
+    message: String!
+    type: String!
+  }
+
+  type ValidUserSuccess {
+    user: FilteredUser!
+    type: String!
+  }
+
   input ValidateLoginInput {
     email: String!
     password: String!
@@ -32,6 +53,7 @@ export const typeDefs = gql`
 
   type Query {
     allUsers: [User!]!
+    validUser: ValidUserResult!
   }
 
   type Mutation {

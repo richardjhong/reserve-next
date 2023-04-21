@@ -14,6 +14,15 @@ export type Scalars = {
   Float: number;
 };
 
+export type FilteredUser = {
+  __typename?: 'FilteredUser';
+  city?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  first_name?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  last_name?: Maybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   registerUser: UserInputValidation;
@@ -33,6 +42,7 @@ export type MutationValidateLoginArgs = {
 export type Query = {
   __typename?: 'Query';
   allUsers: Array<User>;
+  validUser: ValidUserResult;
 };
 
 export type RegisterUserInput = {
@@ -59,6 +69,21 @@ export type UserInputValidation = {
   message: Scalars['String'];
   status: Scalars['Int'];
   token: Scalars['ID'];
+};
+
+export type ValidUserError = {
+  __typename?: 'ValidUserError';
+  message: Scalars['String'];
+  status: Scalars['Int'];
+  type: Scalars['String'];
+};
+
+export type ValidUserResult = ValidUserError | ValidUserSuccess;
+
+export type ValidUserSuccess = {
+  __typename?: 'ValidUserSuccess';
+  type: Scalars['String'];
+  user: FilteredUser;
 };
 
 export type ValidateLoginInput = {
@@ -133,11 +158,20 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
+/** Mapping of union types */
+export type ResolversUnionTypes = {
+  ValidUserResult: ( ValidUserError ) | ( ValidUserSuccess );
+};
 
+/** Mapping of union parent types */
+export type ResolversUnionParentTypes = {
+  ValidUserResult: ( ValidUserError ) | ( ValidUserSuccess );
+};
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  FilteredUser: ResolverTypeWrapper<FilteredUser>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -146,12 +180,16 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
   UserInputValidation: ResolverTypeWrapper<UserInputValidation>;
+  ValidUserError: ResolverTypeWrapper<ValidUserError>;
+  ValidUserResult: ResolverTypeWrapper<ResolversUnionTypes['ValidUserResult']>;
+  ValidUserSuccess: ResolverTypeWrapper<ValidUserSuccess>;
   ValidateLoginInput: ValidateLoginInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  FilteredUser: FilteredUser;
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
@@ -160,7 +198,19 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   User: User;
   UserInputValidation: UserInputValidation;
+  ValidUserError: ValidUserError;
+  ValidUserResult: ResolversUnionParentTypes['ValidUserResult'];
+  ValidUserSuccess: ValidUserSuccess;
   ValidateLoginInput: ValidateLoginInput;
+};
+
+export type FilteredUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['FilteredUser'] = ResolversParentTypes['FilteredUser']> = {
+  city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  first_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  last_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -170,6 +220,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
+  validUser?: Resolver<ResolversTypes['ValidUserResult'], ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -189,10 +240,31 @@ export type UserInputValidationResolvers<ContextType = any, ParentType extends R
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ValidUserErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['ValidUserError'] = ResolversParentTypes['ValidUserError']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ValidUserResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['ValidUserResult'] = ResolversParentTypes['ValidUserResult']> = {
+  __resolveType: TypeResolveFn<'ValidUserError' | 'ValidUserSuccess', ParentType, ContextType>;
+};
+
+export type ValidUserSuccessResolvers<ContextType = any, ParentType extends ResolversParentTypes['ValidUserSuccess'] = ResolversParentTypes['ValidUserSuccess']> = {
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['FilteredUser'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
+  FilteredUser?: FilteredUserResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserInputValidation?: UserInputValidationResolvers<ContextType>;
+  ValidUserError?: ValidUserErrorResolvers<ContextType>;
+  ValidUserResult?: ValidUserResultResolvers<ContextType>;
+  ValidUserSuccess?: ValidUserSuccessResolvers<ContextType>;
 };
 

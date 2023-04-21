@@ -3,7 +3,7 @@ import { ApolloServer } from '@apollo/server';
 import { NextRequest } from 'next/server';
 import { schema } from '../../../apollo';
 
-const server = new ApolloServer(schema);
+const server = new ApolloServer<any>(schema);
 
 const handler = startServerAndCreateNextHandler<NextRequest>(server, { context: async req => ({ req }) });
 

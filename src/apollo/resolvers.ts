@@ -23,11 +23,17 @@ export const resolvers: Resolvers = {
     }
   },
   ValidUserResult: {
-    __resolveType(obj) {
-      if (obj.type === "Error") {
-        return "ValidUserError";
-      }
-      return "ValidUserSuccess";
+    __resolveType(validUserResult) {
+      switch (validUserResult.type) {
+        case "Error":
+          return "ValidUserError";
+
+        case "Success": 
+          return "ValidUserSuccess";
+
+        default:
+          throw new Error('validUser returned unexpected result');
+      };
     }
   },
   Mutation: {

@@ -17,7 +17,7 @@ const AuthModalInputs = ({ inputs, handleChangeInput, isSignin }: AuthModalInput
   const { firstName, lastName, email, phone, city, password } = inputs;
   return (
     <div>
-      {isSignin && (<div className="my-3 flex justify-between text-sm">
+      {!isSignin && (<div className="my-3 flex justify-between text-sm">
         <input 
           type="text" 
           className="border rounded p-2 py-3 w-[49%] border-gray-300" 
@@ -44,7 +44,7 @@ const AuthModalInputs = ({ inputs, handleChangeInput, isSignin }: AuthModalInput
           name="email"
          />
       </div>
-      {isSignin && (<div className="my-3 flex justify-between text-sm">
+      {!isSignin && (<div className="my-3 flex justify-between text-sm">
         <input 
           type="text" 
           className="border rounded p-2 py-3 w-[49%] border-gray-300" 

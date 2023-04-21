@@ -4,10 +4,14 @@ interface AuthModalProps {
   isSignin: boolean;
 }
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import AuthModalInputs from './AuthModalInputs';
+import { useLoginUserMutation, ValidateLoginInput } from '@/generated/graphql-frontend';
+import { getClient } from '../../../../lib/client';
+
+const client = getClient();
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -34,6 +38,21 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
     password: ''
   });
 
+  const [disabled, setDisabled] = useState(true);
+
+  const [login, { data, loading: loginLoading, error: loginError }] = useLoginUserMutation({ client });
+
+
+  useEffect(() => {
+    if (isSignin) {
+      if (inputs.password && inputs.email) return setDisabled(false);
+    } else {
+      if (Object.values(inputs).every(input => input !== '')) return setDisabled(false);
+    };
+
+    setDisabled(true);
+  }, [inputs])
+
   const renderContent = (signinContent: string, signupContent: string) => {
     return isSignin ? signinContent : signupContent;
   };
@@ -44,6 +63,25 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
       [e.target.name]: e.target.value
     });
   };
+
+  const handleClick = async () => {
+    if (isSignin) {
+      if (!loginLoading) {
+        if (loginError) console.log(loginError);
+        console.log('testing');
+        const loginResult = await login({
+          variables: {
+              input: {
+                email: inputs.email,
+                password: inputs.password
+              } as ValidateLoginInput
+            }
+        });
+        console.log('hi there', loginResult.data?.loginUser.token);
+      }
+    }
+  };
+  
 
   return (
     <div>
@@ -76,7 +114,11 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
               handleChangeInput={handleChangeInput} 
               isSignin={isSignin}
             />
-            <button className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400">
+            <button 
+              className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400" 
+              disabled={disabled}
+              onClick={handleClick}
+            >
               {renderContent(
                 "Sign In",
                 "Create Account"

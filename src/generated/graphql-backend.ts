@@ -16,12 +16,18 @@ export type Scalars = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  registerUser: RegisterUserInputValidation;
+  registerUser: UserInputValidation;
+  validateLogin: UserInputValidation;
 };
 
 
 export type MutationRegisterUserArgs = {
   input: RegisterUserInput;
+};
+
+
+export type MutationValidateLoginArgs = {
+  input: ValidateLoginInput;
 };
 
 export type Query = {
@@ -38,12 +44,6 @@ export type RegisterUserInput = {
   phone: Scalars['String'];
 };
 
-export type RegisterUserInputValidation = {
-  __typename?: 'RegisterUserInputValidation';
-  message: Scalars['String'];
-  status: Scalars['Int'];
-};
-
 export type User = {
   __typename?: 'User';
   city: Scalars['String'];
@@ -52,6 +52,18 @@ export type User = {
   last_name: Scalars['String'];
   password: Scalars['String'];
   phone: Scalars['String'];
+};
+
+export type UserInputValidation = {
+  __typename?: 'UserInputValidation';
+  message: Scalars['String'];
+  status: Scalars['Int'];
+  token: Scalars['ID'];
+};
+
+export type ValidateLoginInput = {
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 
@@ -126,39 +138,38 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   RegisterUserInput: RegisterUserInput;
-  RegisterUserInputValidation: ResolverTypeWrapper<RegisterUserInputValidation>;
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
+  UserInputValidation: ResolverTypeWrapper<UserInputValidation>;
+  ValidateLoginInput: ValidateLoginInput;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  ID: Scalars['ID'];
   Int: Scalars['Int'];
   Mutation: {};
   Query: {};
   RegisterUserInput: RegisterUserInput;
-  RegisterUserInputValidation: RegisterUserInputValidation;
   String: Scalars['String'];
   User: User;
+  UserInputValidation: UserInputValidation;
+  ValidateLoginInput: ValidateLoginInput;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  registerUser?: Resolver<ResolversTypes['RegisterUserInputValidation'], ParentType, ContextType, RequireFields<MutationRegisterUserArgs, 'input'>>;
+  registerUser?: Resolver<ResolversTypes['UserInputValidation'], ParentType, ContextType, RequireFields<MutationRegisterUserArgs, 'input'>>;
+  validateLogin?: Resolver<ResolversTypes['UserInputValidation'], ParentType, ContextType, RequireFields<MutationValidateLoginArgs, 'input'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
-};
-
-export type RegisterUserInputValidationResolvers<ContextType = any, ParentType extends ResolversParentTypes['RegisterUserInputValidation'] = ResolversParentTypes['RegisterUserInputValidation']> = {
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -171,10 +182,17 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserInputValidationResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserInputValidation'] = ResolversParentTypes['UserInputValidation']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  token?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  RegisterUserInputValidation?: RegisterUserInputValidationResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  UserInputValidation?: UserInputValidationResolvers<ContextType>;
 };
 

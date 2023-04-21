@@ -22,7 +22,9 @@
     "@types/react": "18.0.37",
     "@types/react-dom": "18.0.11",
     "autoprefixer": "10.4.14",
+    "bcrypt": "^5.1.0",
     "deepmerge": "^4.3.1",
+    "jose": "^4.14.1",
     "mui-image": "^1.0.7",
     "next": "13.3.0",
     "postcss": "8.4.22",
@@ -39,6 +41,7 @@
     "@graphql-codegen/cli": "3.3.0",
     "@graphql-codegen/typescript": "3.0.3",
     "@graphql-codegen/typescript-resolvers": "3.2.0",
+    "@types/bcrypt": "^5.0.0",
     "@types/mui-image": "^1.0.1",
     "@types/validator": "^13.7.15",
     "ts-node": "^10.9.1"

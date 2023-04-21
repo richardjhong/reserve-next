@@ -1,7 +1,8 @@
 import { Resolvers } from '@/generated/graphql-backend';
 import { PrismaClient } from '@prisma/client';
 import { GraphQLError } from 'graphql'
-import validator from 'validator';
+import bcrypt from 'bcrypt';
+import { assignToken, validateInput } from '../../utils/apiHelpers';
 
 const prisma = new PrismaClient();
 
@@ -20,61 +21,88 @@ export const resolvers: Resolvers = {
     registerUser: async (_, { input }) => {
       try {
         const { first_name, last_name, email, phone, city, password } = input;
-        const errors: string[] = [];
 
-        const validationSchema = [
-          {
-            valid: validator.isLength(first_name, {
-              min: 1,
-              max: 20
-            }),
-            errorMessage: "First name is invalid length, must be between 1 and 20 characters"
-          },
-          {
-            valid: validator.isLength(last_name, {
-              min: 1,
-              max: 20
-            }),
-            errorMessage: "Last name is invalid length, must be between 1 and 20 characters"
-          },
-          {
-            valid: validator.isEmail(email),
-            errorMessage: "Email is invalid"
-          },
-          {
-            valid: validator.isMobilePhone(phone),
-            errorMessage: "Phone number is invalid"
-          },
-          {
-            valid: validator.isLength(city, {min: 1}),
-            errorMessage: "City is invalid"
-          },
-          {
-            valid: validator.isStrongPassword(password),
-            errorMessage: "Password is not strong enough"
-          },
-        ];
-
-        validationSchema.forEach((check) => {
-          if (!check.valid) {
-            errors.push(check.errorMessage);            
-          };
-        });
+        const errors = await validateInput(email, password, first_name, last_name, city, phone);
 
         if (errors.length) {
           return {
             status: 400,
-            message: errors[0]
+            message: errors[0],
+            token: ''
           };
-        }
-
-        return {
-          status: 200,
-          message: 'Registration successful'
         };
+
+        const userWithEmail = await prisma.user.findUnique({
+          where: {
+            email
+          }
+        });
+
+        if (userWithEmail) 
+        return { 
+          status: 400, 
+          message: 'Email is associated with another account',
+          token: ''
+        };
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const user = await prisma.user.create({
+          data: {
+            first_name,
+            last_name,
+            password: hashedPassword,
+            city,
+            phone,
+            email
+          }
+        });
+
+        return assignToken(user.email, 'register');
       } catch (err: any) {
         throw new GraphQLError('Failed to register user: ' + err.message);
       }
     },
+    validateLogin: async (_, { input }) => {
+      try {
+        const { email, password } = input;
+
+        const errors = await validateInput(email, password);
+
+        if (errors.length) {
+          return {
+            status: 400,
+            message: errors[0],
+            token: ''
+          };
+        };
+
+        const userWithEmail = await prisma.user.findUnique({
+          where: {
+            email
+          }
+        });
+
+        if (!userWithEmail) 
+        return { 
+          status: 401, 
+          message: 'Email or password is invalid',
+          token: ''
+        };
+
+        const isMatch = await bcrypt.compare(password, userWithEmail.password);
+
+        if (!isMatch)
+        return { 
+          status: 401, 
+          message: 'Email or password is invalid',
+          token: ''
+        }; 
+
+        return assignToken(email, 'login');
+      } catch (err: any) {
+        throw new GraphQLError('Failed to login user: ' + err.message);
+      }
+    }
   },
 };

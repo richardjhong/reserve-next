@@ -25,18 +25,18 @@ export type FilteredUser = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  loginUser: UserInputValidation;
   registerUser: UserInputValidation;
-  validateLogin: UserInputValidation;
+};
+
+
+export type MutationLoginUserArgs = {
+  input: ValidateLoginInput;
 };
 
 
 export type MutationRegisterUserArgs = {
   input: RegisterUserInput;
-};
-
-
-export type MutationValidateLoginArgs = {
-  input: ValidateLoginInput;
 };
 
 export type Query = {
@@ -214,8 +214,8 @@ export type FilteredUserResolvers<ContextType = any, ParentType extends Resolver
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  loginUser?: Resolver<ResolversTypes['UserInputValidation'], ParentType, ContextType, RequireFields<MutationLoginUserArgs, 'input'>>;
   registerUser?: Resolver<ResolversTypes['UserInputValidation'], ParentType, ContextType, RequireFields<MutationRegisterUserArgs, 'input'>>;
-  validateLogin?: Resolver<ResolversTypes['UserInputValidation'], ParentType, ContextType, RequireFields<MutationValidateLoginArgs, 'input'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {

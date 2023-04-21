@@ -16,18 +16,22 @@ export const resolvers: Resolvers = {
         throw new GraphQLError('Failed to fetch all users');
       }
     },
-    validUser: async (_parent, _args, { req }) => {
-      const bearerToken = req.headers.get('authorization') as string;
-
-      return authorizedUser(bearerToken);
+    validUser: async (_parent, _args, { authResult }) => {
+      return authResult;
     }
   },
   ValidUserResult: {
-    __resolveType(obj) {
-      if (obj.type === "Error") {
-        return "ValidUserError";
-      }
-      return "ValidUserSuccess";
+    __resolveType(validUserResult) {
+      switch (validUserResult.type) {
+        case "Error":
+          return "ValidUserError";
+
+        case "Success": 
+          return "ValidUserSuccess";
+
+        default:
+          throw new Error('validUser returned unexpected result');
+      };
     }
   },
   Mutation: {
@@ -76,7 +80,7 @@ export const resolvers: Resolvers = {
         throw new GraphQLError('Failed to register user: ' + err.message);
       }
     },
-    validateLogin: async (_, { input }) => {
+    loginUser: async (_, { input }) => {
       try {
         const { email, password } = input;
 

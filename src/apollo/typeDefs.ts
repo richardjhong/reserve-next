@@ -58,6 +58,6 @@ export const typeDefs = gql`
 
   type Mutation {
     registerUser(input: RegisterUserInput!): UserInputValidation!
-    validateLogin(input: ValidateLoginInput!): UserInputValidation!
+    loginUser(input: ValidateLoginInput!): UserInputValidation!
   }
 `

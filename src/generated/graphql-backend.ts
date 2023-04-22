@@ -42,7 +42,7 @@ export type MutationRegisterUserArgs = {
 export type Query = {
   __typename?: 'Query';
   allUsers: Array<User>;
-  validUser: ValidUserResult;
+  validUser: FilteredUser;
 };
 
 export type RegisterUserInput = {
@@ -66,24 +66,7 @@ export type User = {
 
 export type UserInputValidation = {
   __typename?: 'UserInputValidation';
-  message: Scalars['String'];
-  status: Scalars['Int'];
   token: Scalars['ID'];
-};
-
-export type ValidUserError = {
-  __typename?: 'ValidUserError';
-  message: Scalars['String'];
-  status: Scalars['Int'];
-  type: Scalars['String'];
-};
-
-export type ValidUserResult = ValidUserError | ValidUserSuccess;
-
-export type ValidUserSuccess = {
-  __typename?: 'ValidUserSuccess';
-  type: Scalars['String'];
-  user: FilteredUser;
 };
 
 export type ValidateLoginInput = {
@@ -158,15 +141,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
   info: GraphQLResolveInfo
 ) => TResult | Promise<TResult>;
 
-/** Mapping of union types */
-export type ResolversUnionTypes = {
-  ValidUserResult: ( ValidUserError ) | ( ValidUserSuccess );
-};
 
-/** Mapping of union parent types */
-export type ResolversUnionParentTypes = {
-  ValidUserResult: ( ValidUserError ) | ( ValidUserSuccess );
-};
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
@@ -180,9 +155,6 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>;
   User: ResolverTypeWrapper<User>;
   UserInputValidation: ResolverTypeWrapper<UserInputValidation>;
-  ValidUserError: ResolverTypeWrapper<ValidUserError>;
-  ValidUserResult: ResolverTypeWrapper<ResolversUnionTypes['ValidUserResult']>;
-  ValidUserSuccess: ResolverTypeWrapper<ValidUserSuccess>;
   ValidateLoginInput: ValidateLoginInput;
 };
 
@@ -198,9 +170,6 @@ export type ResolversParentTypes = {
   String: Scalars['String'];
   User: User;
   UserInputValidation: UserInputValidation;
-  ValidUserError: ValidUserError;
-  ValidUserResult: ResolversUnionParentTypes['ValidUserResult'];
-  ValidUserSuccess: ValidUserSuccess;
   ValidateLoginInput: ValidateLoginInput;
 };
 
@@ -220,7 +189,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
-  validUser?: Resolver<ResolversTypes['ValidUserResult'], ParentType, ContextType>;
+  validUser?: Resolver<ResolversTypes['FilteredUser'], ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
@@ -234,26 +203,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type UserInputValidationResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserInputValidation'] = ResolversParentTypes['UserInputValidation']> = {
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   token?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type ValidUserErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['ValidUserError'] = ResolversParentTypes['ValidUserError']> = {
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type ValidUserResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['ValidUserResult'] = ResolversParentTypes['ValidUserResult']> = {
-  __resolveType: TypeResolveFn<'ValidUserError' | 'ValidUserSuccess', ParentType, ContextType>;
-};
-
-export type ValidUserSuccessResolvers<ContextType = any, ParentType extends ResolversParentTypes['ValidUserSuccess'] = ResolversParentTypes['ValidUserSuccess']> = {
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['FilteredUser'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -263,8 +213,5 @@ export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserInputValidation?: UserInputValidationResolvers<ContextType>;
-  ValidUserError?: ValidUserErrorResolvers<ContextType>;
-  ValidUserResult?: ValidUserResultResolvers<ContextType>;
-  ValidUserSuccess?: ValidUserSuccessResolvers<ContextType>;
 };
 

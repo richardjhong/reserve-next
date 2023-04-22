@@ -43,7 +43,7 @@ export type MutationRegisterUserArgs = {
 export type Query = {
   __typename?: 'Query';
   allUsers: Array<User>;
-  validUser: ValidUserResult;
+  validUser: FilteredUser;
 };
 
 export type RegisterUserInput = {
@@ -67,24 +67,7 @@ export type User = {
 
 export type UserInputValidation = {
   __typename?: 'UserInputValidation';
-  message: Scalars['String'];
-  status: Scalars['Int'];
   token: Scalars['ID'];
-};
-
-export type ValidUserError = {
-  __typename?: 'ValidUserError';
-  message: Scalars['String'];
-  status: Scalars['Int'];
-  type: Scalars['String'];
-};
-
-export type ValidUserResult = ValidUserError | ValidUserSuccess;
-
-export type ValidUserSuccess = {
-  __typename?: 'ValidUserSuccess';
-  type: Scalars['String'];
-  user: FilteredUser;
 };
 
 export type ValidateLoginInput = {
@@ -97,14 +80,12 @@ export type LoginUserMutationVariables = Exact<{
 }>;
 
 
-export type LoginUserMutation = { __typename?: 'Mutation', loginUser: { __typename?: 'UserInputValidation', status: number, message: string, token: string } };
+export type LoginUserMutation = { __typename?: 'Mutation', loginUser: { __typename?: 'UserInputValidation', token: string } };
 
 
 export const LoginUserDocument = gql`
     mutation LoginUser($input: ValidateLoginInput!) {
   loginUser(input: $input) {
-    status
-    message
     token
   }
 }

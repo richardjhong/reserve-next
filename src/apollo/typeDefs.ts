@@ -28,22 +28,7 @@ export const typeDefs = gql`
   }
 
   type UserInputValidation {
-    status: Int!
-    message: String!
     token: ID!
-  }
-
-  union ValidUserResult = ValidUserSuccess | ValidUserError
-
-  type ValidUserError {
-    status: Int!
-    message: String!
-    type: String!
-  }
-
-  type ValidUserSuccess {
-    user: FilteredUser!
-    type: String!
   }
 
   input ValidateLoginInput {
@@ -53,7 +38,7 @@ export const typeDefs = gql`
 
   type Query {
     allUsers: [User!]!
-    validUser: ValidUserResult!
+    validUser: FilteredUser!
   }
 
   type Mutation {

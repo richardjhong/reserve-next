@@ -16,22 +16,20 @@ export const resolvers: Resolvers = {
         throw new GraphQLError('Failed to fetch all users');
       }
     },
-    validUser: async (_parent, _args, { authResult }) => {
-      return authResult;
-    }
-  },
-  ValidUserResult: {
-    __resolveType(validUserResult) {
-      switch (validUserResult.type) {
-        case "Error":
-          return "ValidUserError";
-
-        case "Success": 
-          return "ValidUserSuccess";
-
-        default:
-          throw new Error('validUser returned unexpected result');
-      };
+    validUser: async (_parent, _args, { req }) => {
+      try {
+        const bearerToken = req.headers.get('authorization');
+        return authorizedUser(bearerToken);   
+      } catch (err) {
+        throw new GraphQLError(
+          'Authentication token is invalid, please log in',
+          {
+            extensions: {
+              code: 'UNAUTHENTICATED',
+            },
+          }
+        )
+      }
     }
   },
   Mutation: {
@@ -42,11 +40,11 @@ export const resolvers: Resolvers = {
         const errors = await validateInput(email, password, first_name, last_name, city, phone);
 
         if (errors.length) {
-          return {
-            status: 400,
-            message: errors[0],
-            token: ''
-          };
+          throw new GraphQLError(errors[0], {
+            extensions: {
+              code: 'BAD_USER_INPUT'
+            }
+          })
         };
 
         const userWithEmail = await prisma.user.findUnique({
@@ -56,11 +54,11 @@ export const resolvers: Resolvers = {
         });
 
         if (userWithEmail) 
-        return { 
-          status: 400, 
-          message: 'Email is associated with another account',
-          token: ''
-        };
+        throw new GraphQLError(`An account with email ${email} already exists`, {
+          extensions: {
+            code: 'BAD_USER_INPUT'
+          }
+        })
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -77,7 +75,7 @@ export const resolvers: Resolvers = {
 
         return assignToken(user.email, 'register');
       } catch (err: any) {
-        throw new GraphQLError('Failed to register user: ' + err.message);
+        throw new GraphQLError(err.message);
       }
     },
     loginUser: async (_, { input }) => {
@@ -87,11 +85,11 @@ export const resolvers: Resolvers = {
         const errors = await validateInput(email, password);
 
         if (errors.length) {
-          return {
-            status: 400,
-            message: errors[0],
-            token: ''
-          };
+          throw new GraphQLError(errors[0], {
+            extensions: {
+              code: 'BAD_USER_INPUT'
+            }
+          })
         };
 
         const userWithEmail = await prisma.user.findUnique({
@@ -101,24 +99,24 @@ export const resolvers: Resolvers = {
         });
 
         if (!userWithEmail) 
-        return { 
-          status: 401, 
-          message: 'Email or password is invalid',
-          token: ''
-        };
+        throw new GraphQLError('Invalid email', {
+          extensions: {
+            code: 'UNAUTHENTICATED'
+          }
+        })
 
         const isMatch = await bcrypt.compare(password, userWithEmail.password);
 
         if (!isMatch)
-        return { 
-          status: 401, 
-          message: 'Email or password is invalid',
-          token: ''
-        }; 
+        throw new GraphQLError('Invalid password', {
+          extensions: {
+            code: 'UNAUTHENTICATED'
+          }
+        })
 
         return assignToken(email, 'login');
       } catch (err: any) {
-        throw new GraphQLError('Failed to login user: ' + err.message);
+        throw new GraphQLError(err.message);
       }
     }
   },

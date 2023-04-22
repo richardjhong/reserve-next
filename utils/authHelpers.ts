@@ -2,8 +2,11 @@ import * as jose from 'jose';
 import jwt from 'jsonwebtoken';
 import validator from 'validator';
 import { PrismaClient } from '@prisma/client';
+import { serialize, parse } from 'cookie';
 
 const prisma = new PrismaClient();
+
+export const MAX_AGE = 60 * 60 * 8 // 8 hours
 
 export const assignToken = async (email: string, interaction: string) => {
   const alg = "HS256";
@@ -14,10 +17,9 @@ export const assignToken = async (email: string, interaction: string) => {
     .setExpirationTime("2h")
     .sign(secret)
 
+
   return {
-    status: 200,
-    message: interaction === 'register' ? 'Registration successful' : 'Login successful',
-    token
+    token: "Bearer " + token
   };
 };
 
@@ -81,44 +83,12 @@ export const validateInput = async (
 }
 
 export const authorizedUser = async (bearerToken: string) => {
-  if (!bearerToken) 
-  return { 
-    status: 401, 
-    message: 'You must be logged in',
-    type: 'Error'
-  };
-
   const token = bearerToken.split(' ')[1];
-
-  if (!token) {
-    return {
-      status: 401,
-      message: 'Unauthorized request',
-      type: 'Error'
-    }
-  }
-
   const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
-  try {
-    await jose.jwtVerify(token, secret);
-  } catch (err) {
-    return {
-      status: 401,
-      message: 'Invalid token',
-      type: 'Error'
-    }
-  }
+  await jose.jwtVerify(token, secret);
 
   const payload = jwt.decode(token) as {email: string};
-
-  if (!payload.email) {
-    return {
-      status: 401,
-      message: 'Invalid token',
-      type: 'Error'
-    }
-  }
 
   const user = await prisma.user.findUnique({
     where: {
@@ -133,16 +103,5 @@ export const authorizedUser = async (bearerToken: string) => {
     }
   });  
 
-  if (!user) {
-    return {
-      status: 401,
-      message: 'Could not validate user',
-      type: 'Error'
-    }
-  };
-
-  return {
-    user,
-    type: 'Success'
-  };
+  return user!;
 }

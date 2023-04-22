@@ -1,7 +1,5 @@
 mutation LoginUser($input: ValidateLoginInput!) {
   loginUser(input: $input) {
-    status
-    message
     token
   }
 }

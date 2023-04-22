@@ -10,6 +10,7 @@ import Modal from '@mui/material/Modal';
 import AuthModalInputs from './AuthModalInputs';
 import { useLoginUserMutation, ValidateLoginInput } from '@/generated/graphql-frontend';
 import { getClient } from '../../../../lib/client';
+import { CircularProgress, Alert } from '@mui/material';
 
 const client = getClient();
 
@@ -42,7 +43,6 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
 
   const [login, { data, loading: loginLoading, error: loginError }] = useLoginUserMutation({ client });
 
-
   useEffect(() => {
     if (isSignin) {
       if (inputs.password && inputs.email) return setDisabled(false);
@@ -64,7 +64,8 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
     });
   };
 
-  const handleClick = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (isSignin) {
       if (!loginLoading) {
         const loginResult = await login({
@@ -75,11 +76,11 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
               } as ValidateLoginInput
             }
         });
+        console.log(loginResult);
       }
     }
   };
   
-
   return (
     <div>
       <button 
@@ -96,33 +97,43 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
         className="text-black"
       >
         <Box sx={style}>
-         <div className="p-2 h-[600px]">
-          <div className="uppercase font-bold text-center pb-2 border-b mb-2 border-gray-400">
-            <p className="text-sm">
-              {renderContent("Sign In", "Create Account")}
-            </p>
-          </div>
-          <div className="m-auto">
-            <h2 className="text-2xl font-light text-center">
-              {renderContent("Log Into Your Account", "Create your OpenTable Account")}
-            </h2>
-            <AuthModalInputs 
-              inputs={inputs} 
-              handleChangeInput={handleChangeInput} 
-              isSignin={isSignin}
-            />
-            <button 
-              className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400" 
-              disabled={disabled}
-              onClick={handleClick}
-            >
-              {renderContent(
-                "Sign In",
-                "Create Account"
-              )}
-            </button>
-          </div>
-         </div>
+         {loginLoading ? (
+           <div className="py-24 px-2 h-[600px] flex justify-center">
+              <CircularProgress />
+            </div>
+          ) : (
+            <form className="p-2 h-[600px]" onSubmit={handleSubmit}>
+              {loginError ? 
+              <Alert severity="error" className="mb-4 bg-red-200 text-black">
+                {loginError.message}
+              </Alert> 
+              : null}
+              <div className="uppercase font-bold text-center pb-2 border-b mb-2 border-gray-400">
+                <p className="text-sm">
+                  {renderContent("Sign In", "Create Account")}
+                </p>
+            </div>
+            <div className="m-auto">
+              <h2 className="text-2xl font-light text-center">
+                {renderContent("Log Into Your Account", "Create your OpenTable Account")}
+              </h2>
+              <AuthModalInputs 
+                inputs={inputs} 
+                handleChangeInput={handleChangeInput} 
+                isSignin={isSignin}
+              />
+              <button 
+                className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400" 
+                disabled={disabled}
+                type="submit"
+              >
+                {renderContent(
+                  "Sign In",
+                  "Create Account"
+                )}
+              </button>
+            </div>
+          </form>)}
         </Box>
       </Modal>
     </div>

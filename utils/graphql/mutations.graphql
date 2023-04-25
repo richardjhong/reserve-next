@@ -1,5 +1,6 @@
 mutation LoginUser($input: ValidateLoginInput!) {
   loginUser(input: $input) {
-    token
+    email
+    response
   }
 }

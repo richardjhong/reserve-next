@@ -27,13 +27,22 @@ export const typeDefs = gql`
     password: String!
   }
 
-  type UserInputValidation {
-    token: ID!
+  type RegisterUserOutput {
+    first_name: String!
+    last_name: String!
+    email: String!
+    phone: String!
+    city: String!
   }
 
   input ValidateLoginInput {
     email: String!
     password: String!
+  }
+
+  type ValidateLoginOutput {
+    email: String!
+    response: String
   }
 
   type Query {
@@ -42,7 +51,7 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    registerUser(input: RegisterUserInput!): UserInputValidation!
-    loginUser(input: ValidateLoginInput!): UserInputValidation!
+    registerUser(input: RegisterUserInput!): RegisterUserOutput!
+    loginUser(input: ValidateLoginInput!): ValidateLoginOutput!
   }
 `

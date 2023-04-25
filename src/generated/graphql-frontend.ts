@@ -26,8 +26,8 @@ export type FilteredUser = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  loginUser: UserInputValidation;
-  registerUser: UserInputValidation;
+  loginUser: ValidateLoginOutput;
+  registerUser: RegisterUserOutput;
 };
 
 
@@ -55,6 +55,15 @@ export type RegisterUserInput = {
   phone: Scalars['String'];
 };
 
+export type RegisterUserOutput = {
+  __typename?: 'RegisterUserOutput';
+  city: Scalars['String'];
+  email: Scalars['String'];
+  first_name: Scalars['String'];
+  last_name: Scalars['String'];
+  phone: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
   city: Scalars['String'];
@@ -65,14 +74,15 @@ export type User = {
   phone: Scalars['String'];
 };
 
-export type UserInputValidation = {
-  __typename?: 'UserInputValidation';
-  token: Scalars['ID'];
-};
-
 export type ValidateLoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type ValidateLoginOutput = {
+  __typename?: 'ValidateLoginOutput';
+  email: Scalars['String'];
+  response?: Maybe<Scalars['String']>;
 };
 
 export type LoginUserMutationVariables = Exact<{
@@ -80,13 +90,14 @@ export type LoginUserMutationVariables = Exact<{
 }>;
 
 
-export type LoginUserMutation = { __typename?: 'Mutation', loginUser: { __typename?: 'UserInputValidation', token: string } };
+export type LoginUserMutation = { __typename?: 'Mutation', loginUser: { __typename?: 'ValidateLoginOutput', email: string, response?: string | null } };
 
 
 export const LoginUserDocument = gql`
     mutation LoginUser($input: ValidateLoginInput!) {
   loginUser(input: $input) {
-    token
+    email
+    response
   }
 }
     `;

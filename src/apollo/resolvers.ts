@@ -73,13 +73,20 @@ export const resolvers: Resolvers = {
           }
         });
 
-        return assignToken(user.email, 'register');
+        return {
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          phone: user.phone,
+          city: user.city
+        }
+        
       } catch (err: any) {
         throw new GraphQLError(err.message);
       }
     },
     loginUser: async (_, { input }) => {
-      try {
+      try {      
         const { email, password } = input;
 
         const errors = await validateInput(email, password);
@@ -113,8 +120,13 @@ export const resolvers: Resolvers = {
             code: 'UNAUTHENTICATED'
           }
         })
+        
+        return {
+          email: userWithEmail.email,
+          response: await assignToken(email) || ''
+        };
 
-        return assignToken(email, 'login');
+
       } catch (err: any) {
         throw new GraphQLError(err.message);
       }

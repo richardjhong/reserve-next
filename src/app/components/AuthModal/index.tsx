@@ -11,6 +11,7 @@ import AuthModalInputs from './AuthModalInputs';
 import { useLoginUserMutation, ValidateLoginInput } from '@/generated/graphql-frontend';
 import { getClient } from '../../../../lib/client';
 import { CircularProgress, Alert } from '@mui/material';
+import { setCookie } from 'cookies-next';
 
 const client = getClient();
 
@@ -76,7 +77,19 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
               } as ValidateLoginInput
             }
         });
-        console.log(loginResult);
+
+        setCookie(
+          'jwt', 
+          loginResult?.data?.loginUser?.response, 
+          {
+            expires: new Date((new Date()).getTime() + ( 2 * 60 * 60 * 1000)), // 2 hours from creation
+            httpOnly: true,
+            path: '/',
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV !== 'development'
+          }
+        );
+
       }
     }
   };

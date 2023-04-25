@@ -2,13 +2,10 @@ import * as jose from 'jose';
 import jwt from 'jsonwebtoken';
 import validator from 'validator';
 import { PrismaClient } from '@prisma/client';
-import { serialize, parse } from 'cookie';
 
 const prisma = new PrismaClient();
 
-export const MAX_AGE = 60 * 60 * 8 // 8 hours
-
-export const assignToken = async (email: string, interaction: string) => {
+export const assignToken = async (email: string) => {
   const alg = "HS256";
   const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
@@ -17,10 +14,7 @@ export const assignToken = async (email: string, interaction: string) => {
     .setExpirationTime("2h")
     .sign(secret)
 
-
-  return {
-    token: "Bearer " + token
-  };
+  return token;
 };
 
 export const validateInput = async (

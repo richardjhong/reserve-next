@@ -1,16 +1,25 @@
 import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { ApolloServer } from '@apollo/server';
-import { NextRequest } from 'next/server';
 import { schema } from '../../../apollo';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-const server = new ApolloServer<any>(schema);
+type ApolloContext = {
+  req: NextApiRequest
+  res: NextApiResponse
+}
 
-const handler = startServerAndCreateNextHandler<NextRequest>(server, { context: async req => ({ req }) });
+const server = new ApolloServer<ApolloContext>(schema);
 
-export async function GET(request: NextRequest) {
-  return handler(request);
+const handler = startServerAndCreateNextHandler(
+  server, 
+  { 
+    context: async (req, res) => ({ req, res }) 
+  });
+
+export async function GET(request: NextApiRequest, response: NextApiResponse) {
+  return handler(request, response);
 };
 
-export async function POST(request: NextRequest) {
-  return handler(request);
+export async function POST(request: NextApiRequest, response: NextApiResponse) {
+  return handler(request, response);
 };

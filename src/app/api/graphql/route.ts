@@ -14,7 +14,8 @@ const handler = startServerAndCreateNextHandler(
   server, 
   { 
     context: async (req, res) => ({ req, res }) 
-  });
+  },  
+);
 
 export async function GET(request: NextApiRequest, response: NextApiResponse) {
   return handler(request, response);

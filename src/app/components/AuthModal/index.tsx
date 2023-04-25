@@ -2,16 +2,18 @@
 
 interface AuthModalProps {
   isSignin: boolean;
+  onSuccess: () => void;
 }
 
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import AuthModalInputs from './AuthModalInputs';
-import { useLoginUserMutation, ValidateLoginInput } from '@/generated/graphql-frontend';
+import { useLoginUserMutation, useRegisterUserMutation, useValidUserQuery, ValidateLoginInput } from '@/generated/graphql-frontend';
 import { getClient } from '../../../../lib/client';
 import { CircularProgress, Alert } from '@mui/material';
 import { setCookie } from 'cookies-next';
+import { RegisterUserInput } from '@/generated/graphql-backend';
 
 const client = getClient();
 
@@ -26,7 +28,7 @@ const style = {
   p: 4,
 };
 
-const AuthModal = ({ isSignin }: AuthModalProps)  =>{
+const AuthModal = ({ isSignin, onSuccess }: AuthModalProps)  =>{
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -41,8 +43,8 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
   });
 
   const [disabled, setDisabled] = useState(true);
-
-  const [login, { data, loading: loginLoading, error: loginError }] = useLoginUserMutation({ client });
+  const [login, { loading: loginLoading, error: loginError }] = useLoginUserMutation({ client });
+  const [register, { loading: registerLoading, error: registerError }] = useRegisterUserMutation({ client });
 
   useEffect(() => {
     if (isSignin) {
@@ -83,15 +85,43 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
           loginResult?.data?.loginUser?.response, 
           {
             expires: new Date((new Date()).getTime() + ( 2 * 60 * 60 * 1000)), // 2 hours from creation
-            httpOnly: true,
+            // httpOnly: true,
             path: '/',
             sameSite: 'strict',
             secure: process.env.NODE_ENV !== 'development'
           }
         );
+      }
+    } else {
+      if (!registerLoading) {
+        const registerResult = await register({
+          variables: {
+            input: {
+              first_name: inputs.firstName,
+              last_name: inputs.lastName,
+              email: inputs.email,
+              phone: inputs.phone,
+              city: inputs.city,
+              password: inputs.password
+            } as RegisterUserInput
+          }
+        });
 
+        setCookie(
+          'jwt', 
+          registerResult?.data?.registerUser?.response, 
+          {
+            expires: new Date((new Date()).getTime() + ( 2 * 60 * 60 * 1000)), // 2 hours from creation
+            // httpOnly: true,
+            path: '/',
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV !== 'development'
+          }
+        );
       }
     }
+    if (!loginError && !registerError) handleClose();
+    onSuccess();
   };
   
   return (
@@ -110,7 +140,7 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
         className="text-black"
       >
         <Box sx={style}>
-         {loginLoading ? (
+         {(loginLoading || registerLoading) ? (
            <div className="py-24 px-2 h-[600px] flex justify-center">
               <CircularProgress />
             </div>
@@ -121,9 +151,15 @@ const AuthModal = ({ isSignin }: AuthModalProps)  =>{
                 {loginError.message}
               </Alert> 
               : null}
+               {registerError ? 
+              <Alert severity="error" className="mb-4 bg-red-200 text-black">
+                {registerError.message}
+              </Alert> 
+              : null}
               <div className="uppercase font-bold text-center pb-2 border-b mb-2 border-gray-400">
                 <p className="text-sm">
                   {renderContent("Sign In", "Create Account")}
+                  sign in
                 </p>
             </div>
             <div className="m-auto">

@@ -77,25 +77,30 @@ export const validateInput = async (
 }
 
 export const authorizedUser = async (bearerToken: string) => {
-  const token = bearerToken.split(' ')[1];
-  const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-
-  await jose.jwtVerify(token, secret);
-
-  const payload = jwt.decode(token) as {email: string};
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email: payload.email
-    },
-    select: {
-      id: true,
-      first_name: true,
-      last_name: true,
-      email: true,
-      city: true
-    }
-  });  
-
-  return user!;
+  try {
+    const token = bearerToken.split(' ')[1];
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+  
+    await jose.jwtVerify(token, secret);
+  
+    const payload = jwt.decode(token) as {email: string};
+  
+    const user = await prisma.user.findUnique({
+      where: {
+        email: payload.email
+      },
+      select: {
+        id: true,
+        first_name: true,
+        last_name: true,
+        email: true,
+        city: true
+      }
+    });  
+    
+    return user!;
+ 
+  } catch (err) {
+    throw new Error(err as string);
+  }
 }

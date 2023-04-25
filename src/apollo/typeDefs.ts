@@ -32,7 +32,8 @@ export const typeDefs = gql`
     last_name: String!
     email: String!
     phone: String!
-    city: String!
+    city: String!,
+    response: String!
   }
 
   input ValidateLoginInput {
@@ -42,7 +43,7 @@ export const typeDefs = gql`
 
   type ValidateLoginOutput {
     email: String!
-    response: String
+    response: String!
   }
 
   type Query {

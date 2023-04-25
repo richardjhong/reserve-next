@@ -19,7 +19,7 @@ export const resolvers: Resolvers = {
     validUser: async (_parent, _args, { req }) => {
       try {
         const bearerToken = req.headers.get('authorization');
-        return authorizedUser(bearerToken);   
+        return await authorizedUser(bearerToken);   
       } catch (err) {
         throw new GraphQLError(
           'Authentication token is invalid, please log in',
@@ -78,7 +78,8 @@ export const resolvers: Resolvers = {
           last_name: user.last_name,
           email: user.email,
           phone: user.phone,
-          city: user.city
+          city: user.city,
+          response: await assignToken(email) || ''
         }
         
       } catch (err: any) {

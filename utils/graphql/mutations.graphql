@@ -4,3 +4,14 @@ mutation LoginUser($input: ValidateLoginInput!) {
     response
   }
 }
+
+mutation RegisterUser($input: RegisterUserInput!) {
+  registerUser(input: $input) {
+    first_name
+    last_name
+    email
+    phone
+    city
+    response
+  }
+}

@@ -61,6 +61,7 @@ export type RegisterUserOutput = {
   first_name: Scalars['String'];
   last_name: Scalars['String'];
   phone: Scalars['String'];
+  response: Scalars['String'];
 };
 
 export type User = {
@@ -81,7 +82,7 @@ export type ValidateLoginInput = {
 export type ValidateLoginOutput = {
   __typename?: 'ValidateLoginOutput';
   email: Scalars['String'];
-  response?: Maybe<Scalars['String']>;
+  response: Scalars['String'];
 };
 
 
@@ -208,6 +209,7 @@ export type RegisterUserOutputResolvers<ContextType = any, ParentType extends Re
   first_name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   last_name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phone?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  response?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -223,7 +225,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type ValidateLoginOutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['ValidateLoginOutput'] = ResolversParentTypes['ValidateLoginOutput']> = {
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  response?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  response?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

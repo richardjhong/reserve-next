@@ -2,6 +2,7 @@ import Footer from './components/Footer';
 import NavBar from './components/NavBar';
 import './globals.css';
 import 'react-tooltip/dist/react-tooltip.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 export const metadata = {
   title: 'OpenTable',

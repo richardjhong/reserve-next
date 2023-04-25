@@ -17,13 +17,15 @@ interface Restaurant {
   description: string;
   slug: string;
   reviews: Review[];
+  open_time: string;
+  close_time: string;
 };
 
 interface RestaurantDetailsPageProps {
   params: {
     slug: string;
   }
-}
+};
 
 const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
   const restaurant = await prisma.restaurant.findUnique({
@@ -36,7 +38,9 @@ const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
       images: true,
       description: true,
       slug: true,
-      reviews: true
+      reviews: true,
+      open_time: true,
+      close_time: true
     }
   });
 
@@ -53,7 +57,7 @@ export const metadata = {
 }
 
 const RestaurantDetailsPage = async ({params}: RestaurantDetailsPageProps) => {
-  const { id, name, images, description, slug, reviews } = await fetchRestaurantBySlug(params.slug);
+  const { id, name, images, description, slug, reviews, open_time, close_time } = await fetchRestaurantBySlug(params.slug);
   return (
     <>
       <div className="bg-white w-[70%] rounded p-3 shadow text-black">
@@ -64,7 +68,7 @@ const RestaurantDetailsPage = async ({params}: RestaurantDetailsPageProps) => {
         <Images images={images} />
         <Reviews reviews={reviews}/>   
       </div>
-      <ReservationCard />
+      <ReservationCard openTime={open_time} closeTime={close_time} />
     </>
   )
 }

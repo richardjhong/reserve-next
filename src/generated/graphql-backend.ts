@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -12,6 +12,25 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
+};
+
+export type AvailabilityInput = {
+  day: Scalars['String'];
+  partySize: Scalars['String'];
+  slug: Scalars['String'];
+  time: Scalars['String'];
+};
+
+export type AvailabilityOutput = {
+  __typename?: 'AvailabilityOutput';
+  availabilities: Array<Bookings>;
+};
+
+export type Bookings = {
+  __typename?: 'Bookings';
+  available?: Maybe<Scalars['Boolean']>;
+  time: Scalars['String'];
 };
 
 export type FilteredUser = {
@@ -42,7 +61,13 @@ export type MutationRegisterUserArgs = {
 export type Query = {
   __typename?: 'Query';
   allUsers: Array<User>;
+  availability: AvailabilityOutput;
   validUser: FilteredUser;
+};
+
+
+export type QueryAvailabilityArgs = {
+  input: AvailabilityInput;
 };
 
 export type RegisterUserInput = {
@@ -156,7 +181,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  AvailabilityInput: AvailabilityInput;
+  AvailabilityOutput: ResolverTypeWrapper<AvailabilityOutput>;
+  Bookings: ResolverTypeWrapper<Bookings>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Date: ResolverTypeWrapper<Scalars['Date']>;
   FilteredUser: ResolverTypeWrapper<FilteredUser>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -171,7 +200,11 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  AvailabilityInput: AvailabilityInput;
+  AvailabilityOutput: AvailabilityOutput;
+  Bookings: Bookings;
   Boolean: Scalars['Boolean'];
+  Date: Scalars['Date'];
   FilteredUser: FilteredUser;
   Int: Scalars['Int'];
   Mutation: {};
@@ -183,6 +216,21 @@ export type ResolversParentTypes = {
   ValidateLoginInput: ValidateLoginInput;
   ValidateLoginOutput: ValidateLoginOutput;
 };
+
+export type AvailabilityOutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['AvailabilityOutput'] = ResolversParentTypes['AvailabilityOutput']> = {
+  availabilities?: Resolver<Array<ResolversTypes['Bookings']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type BookingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Bookings'] = ResolversParentTypes['Bookings']> = {
+  available?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  time?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
+  name: 'Date';
+}
 
 export type FilteredUserResolvers<ContextType = any, ParentType extends ResolversParentTypes['FilteredUser'] = ResolversParentTypes['FilteredUser']> = {
   city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -200,6 +248,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
+  availability?: Resolver<ResolversTypes['AvailabilityOutput'], ParentType, ContextType, RequireFields<QueryAvailabilityArgs, 'input'>>;
   validUser?: Resolver<ResolversTypes['FilteredUser'], ParentType, ContextType>;
 };
 
@@ -230,6 +279,9 @@ export type ValidateLoginOutputResolvers<ContextType = any, ParentType extends R
 };
 
 export type Resolvers<ContextType = any> = {
+  AvailabilityOutput?: AvailabilityOutputResolvers<ContextType>;
+  Bookings?: BookingsResolvers<ContextType>;
+  Date?: GraphQLScalarType;
   FilteredUser?: FilteredUserResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;

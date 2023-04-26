@@ -1,6 +1,34 @@
 import { gql } from '@apollo/client'
+import { GraphQLScalarType, Kind } from 'graphql';
+
+export const dateScalar = new GraphQLScalarType({
+  name: 'Date',
+  description: 'Date custom scalar type',
+  serialize(value) {
+    if (value instanceof Date) {
+      return value;
+    }
+    throw Error('GraphQL Date Scalar serializer expected a `Date` object');
+  },
+  parseValue(value) {
+    if (typeof value === 'number') {
+      return new Date(value); // Convert incoming integer to Date
+    }
+    throw new Error('GraphQL Date Scalar parser expected a `number`');
+  },
+  parseLiteral(ast) {
+    if (ast.kind === Kind.INT) {
+      // Convert hard-coded AST string to integer and then to Date
+      return new Date(parseInt(ast.value, 10));
+    }
+    // Invalid hard-coded value (not an integer)
+    return null;
+  },
+});
 
 export const typeDefs = gql`
+  scalar Date
+
   type User {
     first_name: String!
     last_name: String!
@@ -46,9 +74,26 @@ export const typeDefs = gql`
     response: String!
   }
 
+  input AvailabilityInput {
+    slug: String!
+    day: String!
+    time: String!
+    partySize: String!
+  }
+
+  type Bookings {
+    time: String!
+    available: Boolean
+  }
+
+  type AvailabilityOutput {
+    availabilities: [Bookings!]!
+  }
+
   type Query {
     allUsers: [User!]!
     validUser: FilteredUser!
+    availability(input: AvailabilityInput!): AvailabilityOutput!
   }
 
   type Mutation {

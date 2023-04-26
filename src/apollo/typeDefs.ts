@@ -86,6 +86,13 @@ export const typeDefs = gql`
     available: Boolean
   }
 
+  input BookReservationInput {
+    slug: String!
+    day: String!
+    time: String!
+    partySize: String!
+  }
+
   type Query {
     allUsers: [User!]!
     validUser: FilteredUser!
@@ -95,5 +102,6 @@ export const typeDefs = gql`
   type Mutation {
     registerUser(input: RegisterUserInput!): RegisterUserOutput!
     loginUser(input: ValidateLoginInput!): ValidateLoginOutput!
+    bookReservation(input: BookReservationInput!): String!
   }
 `

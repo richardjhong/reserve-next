@@ -1,4 +1,3 @@
-import Reviews from "@/app/restaurant/[slug]/components/Reviews";
 import { Review } from "@prisma/client";
 
 export const calculateReviewRatingAverage = (reviews: Review[]) => {

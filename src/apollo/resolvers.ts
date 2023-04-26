@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { assignToken, authorizedUser, validateInput } from '../../utils/authHelpers';
 import { times } from '@/app/data';
 import { dateScalar } from './typeDefs';
+import { findAvailableTables } from '../../utils/findAvailableTables';
 
 const prisma = new PrismaClient();
 
@@ -37,45 +38,6 @@ export const resolvers: Resolvers = {
       try {
         const { slug, day, time, partySize } = input;
 
-        const searchTimes = times.find(t => {
-          return t.time === time;
-        })?.searchTimes;
-
-        if (!searchTimes) 
-        throw new GraphQLError(
-          'Invalid data provided',
-          {
-            extensions: {
-              code: 'BAD_USER_INPUT'
-            }
-          }
-        );
-
-        const bookings = await prisma.booking.findMany({
-          where: {
-           booking_time: {
-            gte: new Date(`${day}T${searchTimes[0]}`),
-            lte: new Date(`${day}T${searchTimes[searchTimes.length - 1]}`)
-           } 
-          },
-          select: {
-            num_of_people: true,
-            booking_time: true,
-            tables: true
-          }
-        });
-
-        const bookingTablesObj: {[key: string]: {[key: number]: true}} = {};
-
-        bookings.forEach(booking => {
-          bookingTablesObj[booking.booking_time.toISOString()] = booking.tables.reduce((obj, table) => {
-            return {
-              ...obj,
-              [table.table_id]: true
-            }
-          }, {});
-        });
-
         const restaurant = await prisma.restaurant.findUnique({
           where: {
             slug
@@ -86,7 +48,7 @@ export const resolvers: Resolvers = {
             close_time: true
           }
         });
-
+      
         if (!restaurant) {
           throw new GraphQLError(
             'Invalid data provided',
@@ -97,27 +59,8 @@ export const resolvers: Resolvers = {
             }
           );
         };
-
-        const { tables } = restaurant;
-
-        const searchTimesWithTables = searchTimes.map(searchTime => {
-          return {
-            date: new Date(`${day}T${searchTime}`),
-            time: searchTime,
-            tables
-          }
-        });
-
-        searchTimesWithTables.forEach(t => {
-          t.tables = t.tables.filter(table => {
-            if (bookingTablesObj[t.date.toISOString()]) {
-              if (bookingTablesObj[t.date.toISOString()][table.id]) {
-                return false;
-              }
-            };
-            return true;
-          });
-        });
+      
+        const searchTimesWithTables = await findAvailableTables({ day, time, restaurant })
         
         const availabilities = searchTimesWithTables.map(t => {
           const sumSeats = t.tables.reduce((sum, table) => {
@@ -242,6 +185,42 @@ export const resolvers: Resolvers = {
 
       } catch (err: any) {
         throw new GraphQLError(err.message);
+      }
+    },
+    bookReservation: async (_, { input }) => {
+      const { slug, day, time, partySize } = input;
+      try {
+
+        const restaurant = await prisma.restaurant.findUnique({
+          where: {
+            slug
+          }
+        })
+
+        if (!restaurant) 
+        throw new GraphQLError(`Restaurant not found`, {
+          extensions: {
+            code: 'BAD_USER_INPUT'
+          }
+        });
+
+        if (
+          (new Date(`${day}T${time}`) < new Date(`${day}T${restaurant.open_time}`)) || 
+          (new Date(`${day}T${time}`) > new Date(`${day}T${restaurant.close_time}`))
+        )
+        throw new GraphQLError(`Booking time is outside of restaurant operating hours window`, {
+          extensions: {
+            code: 'BAD_USER_INPUT'
+          }
+        });
+
+        return 'hi'
+      } catch (err: any) {
+        throw new GraphQLError(`${err.message}`, {
+          extensions: {
+            code: 'BAD_USER_INPUT'
+          }
+        })
       }
     }
   },

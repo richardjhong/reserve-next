@@ -7,3 +7,12 @@ query ValidUser {
     city
   }
 }
+
+query CheckAvailability($input: AvailabilityInput!) {
+  availability(input: $input) {
+    availabilities {
+      time
+      available
+    }
+  }
+}

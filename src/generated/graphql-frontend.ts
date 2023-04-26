@@ -130,6 +130,13 @@ export type ValidUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ValidUserQuery = { __typename?: 'Query', validUser: { __typename?: 'FilteredUser', id?: number | null, first_name?: string | null, last_name?: string | null, email?: string | null, city?: string | null } };
 
+export type CheckAvailabilityQueryVariables = Exact<{
+  input: AvailabilityInput;
+}>;
+
+
+export type CheckAvailabilityQuery = { __typename?: 'Query', availability: { __typename?: 'AvailabilityOutput', availabilities: Array<{ __typename?: 'Bookings', time: string, available?: boolean | null }> } };
+
 
 export const LoginUserDocument = gql`
     mutation LoginUser($input: ValidateLoginInput!) {
@@ -241,3 +248,41 @@ export function useValidUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type ValidUserQueryHookResult = ReturnType<typeof useValidUserQuery>;
 export type ValidUserLazyQueryHookResult = ReturnType<typeof useValidUserLazyQuery>;
 export type ValidUserQueryResult = Apollo.QueryResult<ValidUserQuery, ValidUserQueryVariables>;
+export const CheckAvailabilityDocument = gql`
+    query CheckAvailability($input: AvailabilityInput!) {
+  availability(input: $input) {
+    availabilities {
+      time
+      available
+    }
+  }
+}
+    `;
+
+/**
+ * __useCheckAvailabilityQuery__
+ *
+ * To run a query within a React component, call `useCheckAvailabilityQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCheckAvailabilityQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCheckAvailabilityQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCheckAvailabilityQuery(baseOptions: Apollo.QueryHookOptions<CheckAvailabilityQuery, CheckAvailabilityQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<CheckAvailabilityQuery, CheckAvailabilityQueryVariables>(CheckAvailabilityDocument, options);
+      }
+export function useCheckAvailabilityLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CheckAvailabilityQuery, CheckAvailabilityQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<CheckAvailabilityQuery, CheckAvailabilityQueryVariables>(CheckAvailabilityDocument, options);
+        }
+export type CheckAvailabilityQueryHookResult = ReturnType<typeof useCheckAvailabilityQuery>;
+export type CheckAvailabilityLazyQueryHookResult = ReturnType<typeof useCheckAvailabilityLazyQuery>;
+export type CheckAvailabilityQueryResult = Apollo.QueryResult<CheckAvailabilityQuery, CheckAvailabilityQueryVariables>;

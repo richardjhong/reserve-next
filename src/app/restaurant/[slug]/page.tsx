@@ -68,7 +68,7 @@ const RestaurantDetailsPage = async ({params}: RestaurantDetailsPageProps) => {
         <Images images={images} />
         <Reviews reviews={reviews}/>   
       </div>
-      <ReservationCard openTime={open_time} closeTime={close_time} />
+      <ReservationCard slug={slug} openTime={open_time} closeTime={close_time} />
     </>
   )
 }

@@ -22,6 +22,13 @@ export type AvailabilitiesInput = {
   time: Scalars['String'];
 };
 
+export type BookReservationInput = {
+  day: Scalars['String'];
+  partySize: Scalars['String'];
+  slug: Scalars['String'];
+  time: Scalars['String'];
+};
+
 export type Bookings = {
   __typename?: 'Bookings';
   available?: Maybe<Scalars['Boolean']>;
@@ -39,8 +46,14 @@ export type FilteredUser = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  bookReservation: Scalars['String'];
   loginUser: ValidateLoginOutput;
   registerUser: RegisterUserOutput;
+};
+
+
+export type MutationBookReservationArgs = {
+  input: BookReservationInput;
 };
 
 
@@ -177,6 +190,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AvailabilitiesInput: AvailabilitiesInput;
+  BookReservationInput: BookReservationInput;
   Bookings: ResolverTypeWrapper<Bookings>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
@@ -195,6 +209,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AvailabilitiesInput: AvailabilitiesInput;
+  BookReservationInput: BookReservationInput;
   Bookings: Bookings;
   Boolean: Scalars['Boolean'];
   Date: Scalars['Date'];
@@ -230,6 +245,7 @@ export type FilteredUserResolvers<ContextType = any, ParentType extends Resolver
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  bookReservation?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationBookReservationArgs, 'input'>>;
   loginUser?: Resolver<ResolversTypes['ValidateLoginOutput'], ParentType, ContextType, RequireFields<MutationLoginUserArgs, 'input'>>;
   registerUser?: Resolver<ResolversTypes['RegisterUserOutput'], ParentType, ContextType, RequireFields<MutationRegisterUserArgs, 'input'>>;
 };

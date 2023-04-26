@@ -23,6 +23,13 @@ export type AvailabilitiesInput = {
   time: Scalars['String'];
 };
 
+export type BookReservationInput = {
+  day: Scalars['String'];
+  partySize: Scalars['String'];
+  slug: Scalars['String'];
+  time: Scalars['String'];
+};
+
 export type Bookings = {
   __typename?: 'Bookings';
   available?: Maybe<Scalars['Boolean']>;
@@ -40,8 +47,14 @@ export type FilteredUser = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  bookReservation: Scalars['String'];
   loginUser: ValidateLoginOutput;
   registerUser: RegisterUserOutput;
+};
+
+
+export type MutationBookReservationArgs = {
+  input: BookReservationInput;
 };
 
 

@@ -13,6 +13,25 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: any;
+};
+
+export type AvailabilityInput = {
+  day: Scalars['String'];
+  partySize: Scalars['String'];
+  slug: Scalars['String'];
+  time: Scalars['String'];
+};
+
+export type AvailabilityOutput = {
+  __typename?: 'AvailabilityOutput';
+  availabilities: Array<Bookings>;
+};
+
+export type Bookings = {
+  __typename?: 'Bookings';
+  available?: Maybe<Scalars['Boolean']>;
+  time: Scalars['String'];
 };
 
 export type FilteredUser = {
@@ -43,7 +62,13 @@ export type MutationRegisterUserArgs = {
 export type Query = {
   __typename?: 'Query';
   allUsers: Array<User>;
+  availability: AvailabilityOutput;
   validUser: FilteredUser;
+};
+
+
+export type QueryAvailabilityArgs = {
+  input: AvailabilityInput;
 };
 
 export type RegisterUserInput = {

@@ -53,10 +53,6 @@ const ReservationCard = ({ slug, openTime, closeTime }: ReservationCardProps) =>
   const [selectedPartySize, setSelectedPartySize] = useState<string>('1');
 
   const [checkAvailability, { loading, data, error }] = useCheckAvailabilityLazyQuery({client});
-  
-  useEffect(() => {
-    console.log('data: ', data)
-  }, [data]);
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date)

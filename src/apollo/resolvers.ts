@@ -96,7 +96,7 @@ export const resolvers: Resolvers = {
               }
             }
           );
-        }
+        };
 
         const { tables } = restaurant;
 
@@ -124,12 +124,6 @@ export const resolvers: Resolvers = {
             return sum + table.seats
           }, 0);
 
-          console.log('test test: ', {
-            time: t.time,
-            available: sumSeats >= parseInt(partySize),
-            sumSeats
-          })
-
           return {
             time: t.time,
             available: sumSeats >= parseInt(partySize),
@@ -140,14 +134,14 @@ export const resolvers: Resolvers = {
           const timeIsBeforeClosingHour = new Date(`${day}T${availability.time}`) <= new Date(`${day}T${restaurant.close_time}`);
 
           return timeIsAfterOpeningHour && timeIsBeforeClosingHour;
-        })
+        });
 
         return availabilities;
       } catch (err: any) {
         throw new GraphQLError(
           `Error retrieving availability: ${err.message}`,
         );
-      }
+      };
     }
   },
   Mutation: {

@@ -37,7 +37,7 @@ const MenuPage = async ({params}: MenuPageProps) => {
 
   return (
     <>
-      <div className="bg-white w-[100%] rounded p-3 shadow text-black">
+      <div className="bg-white w-[100%] rounded p-3 shadow-md text-black">
         <RestaurantNavBar slug={params.slug} />
         <Menu menu={menu}/>
       </div>          

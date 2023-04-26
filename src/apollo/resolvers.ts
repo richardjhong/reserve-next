@@ -33,7 +33,7 @@ export const resolvers: Resolvers = {
         )
       }
     },
-    availability: async (_parent, { input }) => {
+    availabilities: async (_parent, { input }) => {
       try {
         const { slug, day, time, partySize } = input;
 
@@ -124,10 +124,17 @@ export const resolvers: Resolvers = {
             return sum + table.seats
           }, 0);
 
+          console.log('test test: ', {
+            time: t.time,
+            available: sumSeats >= parseInt(partySize),
+            sumSeats
+          })
+
           return {
             time: t.time,
             available: sumSeats >= parseInt(partySize),
           };
+
         }).filter(availability => {
           const timeIsAfterOpeningHour = new Date(`${day}T${availability.time}`) >= new Date(`${day}T${restaurant.open_time}`);
           const timeIsBeforeClosingHour = new Date(`${day}T${availability.time}`) <= new Date(`${day}T${restaurant.close_time}`);
@@ -135,9 +142,7 @@ export const resolvers: Resolvers = {
           return timeIsAfterOpeningHour && timeIsBeforeClosingHour;
         })
 
-        return {
-          availabilities
-        };
+        return availabilities;
       } catch (err: any) {
         throw new GraphQLError(
           `Error retrieving availability: ${err.message}`,

@@ -31,7 +31,7 @@ const Stars = ({reviews, rating }: StarsProps ) => {
 
     return stars.map((star, i) => {
       return (
-        <Image src={star} alt="" className="w-4 h-4 mr-1" key={`star-${i}`}/>
+        <Image src={star} alt="" className="w-4 h-4 mr-1" key={`star-${i}`} style={{objectFit:"contain"}}/>
       );
     });
   };

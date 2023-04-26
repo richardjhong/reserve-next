@@ -8,11 +8,9 @@ query ValidUser {
   }
 }
 
-query CheckAvailability($input: AvailabilityInput!) {
-  availability(input: $input) {
-    availabilities {
-      time
-      available
-    }
+query CheckAvailability($input: AvailabilitiesInput!) {
+  availabilities(input: $input) {
+    time
+    available
   }
 }

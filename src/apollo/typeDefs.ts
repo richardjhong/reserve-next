@@ -74,7 +74,7 @@ export const typeDefs = gql`
     response: String!
   }
 
-  input AvailabilityInput {
+  input AvailabilitiesInput {
     slug: String!
     day: String!
     time: String!
@@ -86,14 +86,10 @@ export const typeDefs = gql`
     available: Boolean
   }
 
-  type AvailabilityOutput {
-    availabilities: [Bookings!]!
-  }
-
   type Query {
     allUsers: [User!]!
     validUser: FilteredUser!
-    availability(input: AvailabilityInput!): AvailabilityOutput!
+    availabilities(input: AvailabilitiesInput!): [Bookings!]!
   }
 
   type Mutation {

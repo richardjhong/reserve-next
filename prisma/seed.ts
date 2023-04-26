@@ -6,6 +6,7 @@ type Data = {
 };
 
 const seedData = async () => {
+  await prisma.bookingsOnTable.deleteMany();
   await prisma.table.deleteMany();
   await prisma.review.deleteMany();
   await prisma.item.deleteMany();
@@ -1313,6 +1314,18 @@ const seedData = async () => {
       {
         restaurant_id: vivaanId,
         seats: 2,
+      },
+      {
+        restaurant_id: RamaKrishnaId,
+        seats: 4
+      },
+      {
+        restaurant_id: RamaKrishnaId,
+        seats: 4
+      },
+      {
+        restaurant_id: RamaKrishnaId,
+        seats: 6
       },
     ],
   });

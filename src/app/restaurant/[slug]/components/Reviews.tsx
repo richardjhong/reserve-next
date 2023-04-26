@@ -24,7 +24,7 @@ const Reviews = ({reviews}: ReviewsProps) => {
       </h1>
       <div>
         {reviews.map((review, i) => (
-          <ReviewCard review={review} id={review.id} />
+          <ReviewCard key={review.id} review={review} id={review.id} />
         ))}
       </div>
     </div>

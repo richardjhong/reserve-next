@@ -15,16 +15,11 @@ export type Scalars = {
   Date: any;
 };
 
-export type AvailabilityInput = {
+export type AvailabilitiesInput = {
   day: Scalars['String'];
   partySize: Scalars['String'];
   slug: Scalars['String'];
   time: Scalars['String'];
-};
-
-export type AvailabilityOutput = {
-  __typename?: 'AvailabilityOutput';
-  availabilities: Array<Bookings>;
 };
 
 export type Bookings = {
@@ -61,13 +56,13 @@ export type MutationRegisterUserArgs = {
 export type Query = {
   __typename?: 'Query';
   allUsers: Array<User>;
-  availability: AvailabilityOutput;
+  availabilities: Array<Bookings>;
   validUser: FilteredUser;
 };
 
 
-export type QueryAvailabilityArgs = {
-  input: AvailabilityInput;
+export type QueryAvailabilitiesArgs = {
+  input: AvailabilitiesInput;
 };
 
 export type RegisterUserInput = {
@@ -181,8 +176,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  AvailabilityInput: AvailabilityInput;
-  AvailabilityOutput: ResolverTypeWrapper<AvailabilityOutput>;
+  AvailabilitiesInput: AvailabilitiesInput;
   Bookings: ResolverTypeWrapper<Bookings>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
@@ -200,8 +194,7 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  AvailabilityInput: AvailabilityInput;
-  AvailabilityOutput: AvailabilityOutput;
+  AvailabilitiesInput: AvailabilitiesInput;
   Bookings: Bookings;
   Boolean: Scalars['Boolean'];
   Date: Scalars['Date'];
@@ -215,11 +208,6 @@ export type ResolversParentTypes = {
   User: User;
   ValidateLoginInput: ValidateLoginInput;
   ValidateLoginOutput: ValidateLoginOutput;
-};
-
-export type AvailabilityOutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['AvailabilityOutput'] = ResolversParentTypes['AvailabilityOutput']> = {
-  availabilities?: Resolver<Array<ResolversTypes['Bookings']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type BookingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Bookings'] = ResolversParentTypes['Bookings']> = {
@@ -248,7 +236,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   allUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
-  availability?: Resolver<ResolversTypes['AvailabilityOutput'], ParentType, ContextType, RequireFields<QueryAvailabilityArgs, 'input'>>;
+  availabilities?: Resolver<Array<ResolversTypes['Bookings']>, ParentType, ContextType, RequireFields<QueryAvailabilitiesArgs, 'input'>>;
   validUser?: Resolver<ResolversTypes['FilteredUser'], ParentType, ContextType>;
 };
 
@@ -279,7 +267,6 @@ export type ValidateLoginOutputResolvers<ContextType = any, ParentType extends R
 };
 
 export type Resolvers<ContextType = any> = {
-  AvailabilityOutput?: AvailabilityOutputResolvers<ContextType>;
   Bookings?: BookingsResolvers<ContextType>;
   Date?: GraphQLScalarType;
   FilteredUser?: FilteredUserResolvers<ContextType>;

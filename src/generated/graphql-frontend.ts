@@ -16,16 +16,11 @@ export type Scalars = {
   Date: any;
 };
 
-export type AvailabilityInput = {
+export type AvailabilitiesInput = {
   day: Scalars['String'];
   partySize: Scalars['String'];
   slug: Scalars['String'];
   time: Scalars['String'];
-};
-
-export type AvailabilityOutput = {
-  __typename?: 'AvailabilityOutput';
-  availabilities: Array<Bookings>;
 };
 
 export type Bookings = {
@@ -62,13 +57,13 @@ export type MutationRegisterUserArgs = {
 export type Query = {
   __typename?: 'Query';
   allUsers: Array<User>;
-  availability: AvailabilityOutput;
+  availabilities: Array<Bookings>;
   validUser: FilteredUser;
 };
 
 
-export type QueryAvailabilityArgs = {
-  input: AvailabilityInput;
+export type QueryAvailabilitiesArgs = {
+  input: AvailabilitiesInput;
 };
 
 export type RegisterUserInput = {
@@ -131,11 +126,11 @@ export type ValidUserQueryVariables = Exact<{ [key: string]: never; }>;
 export type ValidUserQuery = { __typename?: 'Query', validUser: { __typename?: 'FilteredUser', id?: number | null, first_name?: string | null, last_name?: string | null, email?: string | null, city?: string | null } };
 
 export type CheckAvailabilityQueryVariables = Exact<{
-  input: AvailabilityInput;
+  input: AvailabilitiesInput;
 }>;
 
 
-export type CheckAvailabilityQuery = { __typename?: 'Query', availability: { __typename?: 'AvailabilityOutput', availabilities: Array<{ __typename?: 'Bookings', time: string, available?: boolean | null }> } };
+export type CheckAvailabilityQuery = { __typename?: 'Query', availabilities: Array<{ __typename?: 'Bookings', time: string, available?: boolean | null }> };
 
 
 export const LoginUserDocument = gql`
@@ -249,12 +244,10 @@ export type ValidUserQueryHookResult = ReturnType<typeof useValidUserQuery>;
 export type ValidUserLazyQueryHookResult = ReturnType<typeof useValidUserLazyQuery>;
 export type ValidUserQueryResult = Apollo.QueryResult<ValidUserQuery, ValidUserQueryVariables>;
 export const CheckAvailabilityDocument = gql`
-    query CheckAvailability($input: AvailabilityInput!) {
-  availability(input: $input) {
-    availabilities {
-      time
-      available
-    }
+    query CheckAvailability($input: AvailabilitiesInput!) {
+  availabilities(input: $input) {
+    time
+    available
   }
 }
     `;

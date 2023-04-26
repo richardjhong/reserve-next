@@ -60,7 +60,7 @@ const RestaurantDetailsPage = async ({params}: RestaurantDetailsPageProps) => {
   const { id, name, images, description, slug, reviews, open_time, close_time } = await fetchRestaurantBySlug(params.slug);
   return (
     <>
-      <div className="bg-white w-[70%] rounded p-3 shadow text-black">
+      <div className="bg-white w-[70%] rounded p-3 shadow-md border-gray-200 border-2 text-black">
         <RestaurantNavBar slug={slug} />
         <Title name={name} />
         <Rating reviews={reviews} />

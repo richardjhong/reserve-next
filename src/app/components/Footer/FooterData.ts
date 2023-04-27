@@ -1,15 +1,16 @@
-import { SiNextdotjs, SiTypescript, SiReact, SiSupabase, SiPrisma, SiTailwindcss } from "react-icons/si";
-import { FaNode, FaGithub, FaLinkedin } from "react-icons/fa";
+import { SiNextdotjs, SiTypescript, SiReact, SiSupabase, SiPrisma, SiTailwindcss, SiApollographql, SiJsonwebtokens, SiLetsencrypt, SiMui, SiPostgresql } from "react-icons/si";
+import { FaNode, FaGithub, FaLinkedin, FaCookie } from "react-icons/fa";
+import { GrValidate } from "react-icons/gr";
 
 export const websiteTechStack = {
   devicons: [
     {
-      icon: SiTypescript,
-      tooltipMessage: "TypeScript"
-    },
-    {
       icon: SiNextdotjs,
       tooltipMessage: "Next.js"
+    },
+    {
+      icon: SiTypescript,
+      tooltipMessage: "TypeScript"
     },
     {
       icon: SiReact,
@@ -28,8 +29,36 @@ export const websiteTechStack = {
       tooltipMessage: "Supabase"
     },
     {
+      icon: SiPostgresql,
+      tooltipMessage: "Postgres"
+    },
+    {
       icon: SiTailwindcss,
       tooltipMessage: "Tailwind CSS"
+    },
+    {
+      icon: SiMui,
+      tooltipMessage: "Mui"
+    },
+    {
+      icon: SiApollographql,
+      tooltipMessage: "Apollo"
+    },
+    {
+      icon: SiJsonwebtokens,
+      tooltipMessage: "JSON Web Tokens"
+    },
+    {
+      icon: FaCookie,
+      tooltipMessage: "cookies-next"
+    },
+    {
+      icon: SiLetsencrypt,
+      tooltipMessage: "bcrypt"
+    },
+    {
+      icon: GrValidate,
+      tooltipMessage: "validator"
     }
   ]
 }

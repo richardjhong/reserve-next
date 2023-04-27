@@ -35,6 +35,19 @@ export type BookReservationInput = {
   time: Scalars['String'];
 };
 
+export type BookReservationOutput = {
+  __typename?: 'BookReservationOutput';
+  bkr_email: Scalars['String'];
+  bkr_f_name: Scalars['String'];
+  bkr_l_name: Scalars['String'];
+  bkr_phone: Scalars['String'];
+  booking_time: Scalars['Date'];
+  num_of_people: Scalars['Int'];
+  occasion?: Maybe<Scalars['String']>;
+  request?: Maybe<Scalars['String']>;
+  restaurant_id: Scalars['Int'];
+};
+
 export type Bookings = {
   __typename?: 'Bookings';
   available?: Maybe<Scalars['Boolean']>;
@@ -52,7 +65,7 @@ export type FilteredUser = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  bookReservation: Scalars['String'];
+  bookReservation: BookReservationOutput;
   loginUser: ValidateLoginOutput;
   registerUser: RegisterUserOutput;
 };
@@ -197,6 +210,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   AvailabilitiesInput: AvailabilitiesInput;
   BookReservationInput: BookReservationInput;
+  BookReservationOutput: ResolverTypeWrapper<BookReservationOutput>;
   Bookings: ResolverTypeWrapper<Bookings>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
@@ -216,6 +230,7 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   AvailabilitiesInput: AvailabilitiesInput;
   BookReservationInput: BookReservationInput;
+  BookReservationOutput: BookReservationOutput;
   Bookings: Bookings;
   Boolean: Scalars['Boolean'];
   Date: Scalars['Date'];
@@ -229,6 +244,19 @@ export type ResolversParentTypes = {
   User: User;
   ValidateLoginInput: ValidateLoginInput;
   ValidateLoginOutput: ValidateLoginOutput;
+};
+
+export type BookReservationOutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['BookReservationOutput'] = ResolversParentTypes['BookReservationOutput']> = {
+  bkr_email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  bkr_f_name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  bkr_l_name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  bkr_phone?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  booking_time?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  num_of_people?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  occasion?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  request?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  restaurant_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type BookingsResolvers<ContextType = any, ParentType extends ResolversParentTypes['Bookings'] = ResolversParentTypes['Bookings']> = {
@@ -251,7 +279,7 @@ export type FilteredUserResolvers<ContextType = any, ParentType extends Resolver
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  bookReservation?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationBookReservationArgs, 'input'>>;
+  bookReservation?: Resolver<ResolversTypes['BookReservationOutput'], ParentType, ContextType, RequireFields<MutationBookReservationArgs, 'input'>>;
   loginUser?: Resolver<ResolversTypes['ValidateLoginOutput'], ParentType, ContextType, RequireFields<MutationLoginUserArgs, 'input'>>;
   registerUser?: Resolver<ResolversTypes['RegisterUserOutput'], ParentType, ContextType, RequireFields<MutationRegisterUserArgs, 'input'>>;
 };
@@ -289,6 +317,7 @@ export type ValidateLoginOutputResolvers<ContextType = any, ParentType extends R
 };
 
 export type Resolvers<ContextType = any> = {
+  BookReservationOutput?: BookReservationOutputResolvers<ContextType>;
   Bookings?: BookingsResolvers<ContextType>;
   Date?: GraphQLScalarType;
   FilteredUser?: FilteredUserResolvers<ContextType>;

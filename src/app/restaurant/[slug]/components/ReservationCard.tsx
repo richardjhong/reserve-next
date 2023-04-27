@@ -115,11 +115,12 @@ const ReservationCard = ({ slug, openTime, closeTime }: ReservationCardProps) =>
           <div className="mt-4">
             <p className="text-reg">Select a Time</p>
             <div className="flex flex-wrap mt-2">
-              {data.availabilities.map(time => {
+              {data.availabilities.map((time, i) => {
                 return time.available ? 
                 <Link 
                   href={`/reserve/${slug}?date=${formatDate(selectedDate)}T${selectedTime}&partySize=${selectedPartySize}`}
                   className="bg-red-600 cursor-pointer p-2 w-24 text-center text-white mb-3 roudned mr-3"
+                  key={`${time.time}-${i}`}
                 >
                   <p className="text-sm font-bold">
                     {convertToDisplayTime(time.time as Time)}

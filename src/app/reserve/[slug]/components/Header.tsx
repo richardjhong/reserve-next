@@ -1,25 +1,27 @@
 import { Time, convertToDisplayTime } from "../../../../../utils/convertToDisplayTime";
+import { format } from 'date-fns';
 
 interface HeaderProps {
   day: string;
   time: string;
   partySize: string;
-  name: string;
+  restaurant: {
+    name: string;
+    main_image: string;
+  }
 };
 
-const Header = ({ day, time, partySize, name }: HeaderProps) => {
-  const convertToReadableDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    const formattedDate = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    return formattedDate;
-  };
+const Header = ({ day, time, partySize, restaurant }: HeaderProps) => {
+  const { name, main_image } = restaurant;
+
+  const dayWithSlashes = new Date(day.replace(/-/g, '/'));
 
   return (
     <div>
       <h3 className="font-bold">You're almost done!</h3>
       <div className="mt-5 flex">
         <img
-          src="https://images.otstatic.com/prod1/49153814/2/medium.jpg"
+          src={main_image}
           alt=""
           className="w-32 h-18 rounded"
         />
@@ -28,7 +30,7 @@ const Header = ({ day, time, partySize, name }: HeaderProps) => {
             {name}
           </h1>
           <div className="flex mt-3">
-            <p className="mr-6">{convertToReadableDate(day)}</p>
+            <p className="mr-6">{format(new Date(dayWithSlashes), "cccc, LLLL do")}</p>
             <p className="mr-6">{convertToDisplayTime(time as Time)}</p>
             <p className="mr-6">{parseInt(partySize) === 1 ? `1 person` : `${partySize} people`}</p>
           </div>

@@ -97,7 +97,18 @@ export const typeDefs = gql`
     bkr_phone: String!
     occasion: String
     request: String
+  }
 
+  type BookReservationOutput {
+    num_of_people: Int!
+    booking_time: Date!
+    bkr_f_name: String!
+    bkr_l_name: String!
+    bkr_email: String!
+    bkr_phone: String!
+    restaurant_id: Int!
+    occasion: String
+    request: String
   }
 
   type Query {
@@ -109,6 +120,6 @@ export const typeDefs = gql`
   type Mutation {
     registerUser(input: RegisterUserInput!): RegisterUserOutput!
     loginUser(input: ValidateLoginInput!): ValidateLoginOutput!
-    bookReservation(input: BookReservationInput!): String!
+    bookReservation(input: BookReservationInput!): BookReservationOutput!
   }
 `

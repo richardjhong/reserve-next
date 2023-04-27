@@ -17,5 +17,15 @@ mutation RegisterUser($input: RegisterUserInput!) {
 }
 
 mutation BookReservation($input: BookReservationInput!) {
-  bookReservation(input: $input)
+  bookReservation(input: $input) {
+    num_of_people
+    booking_time
+    bkr_f_name
+    bkr_l_name
+    bkr_email
+    bkr_phone
+    restaurant_id
+    occasion
+    request
+  }
 }

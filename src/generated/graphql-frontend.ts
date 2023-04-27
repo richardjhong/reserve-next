@@ -36,6 +36,19 @@ export type BookReservationInput = {
   time: Scalars['String'];
 };
 
+export type BookReservationOutput = {
+  __typename?: 'BookReservationOutput';
+  bkr_email: Scalars['String'];
+  bkr_f_name: Scalars['String'];
+  bkr_l_name: Scalars['String'];
+  bkr_phone: Scalars['String'];
+  booking_time: Scalars['Date'];
+  num_of_people: Scalars['Int'];
+  occasion?: Maybe<Scalars['String']>;
+  request?: Maybe<Scalars['String']>;
+  restaurant_id: Scalars['Int'];
+};
+
 export type Bookings = {
   __typename?: 'Bookings';
   available?: Maybe<Scalars['Boolean']>;
@@ -53,7 +66,7 @@ export type FilteredUser = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  bookReservation: Scalars['String'];
+  bookReservation: BookReservationOutput;
   loginUser: ValidateLoginOutput;
   registerUser: RegisterUserOutput;
 };
@@ -144,7 +157,7 @@ export type BookReservationMutationVariables = Exact<{
 }>;
 
 
-export type BookReservationMutation = { __typename?: 'Mutation', bookReservation: string };
+export type BookReservationMutation = { __typename?: 'Mutation', bookReservation: { __typename?: 'BookReservationOutput', num_of_people: number, booking_time: any, bkr_f_name: string, bkr_l_name: string, bkr_email: string, bkr_phone: string, restaurant_id: number, occasion?: string | null, request?: string | null } };
 
 export type ValidUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -233,7 +246,17 @@ export type RegisterUserMutationResult = Apollo.MutationResult<RegisterUserMutat
 export type RegisterUserMutationOptions = Apollo.BaseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables>;
 export const BookReservationDocument = gql`
     mutation BookReservation($input: BookReservationInput!) {
-  bookReservation(input: $input)
+  bookReservation(input: $input) {
+    num_of_people
+    booking_time
+    bkr_f_name
+    bkr_l_name
+    bkr_email
+    bkr_phone
+    restaurant_id
+    occasion
+    request
+  }
 }
     `;
 export type BookReservationMutationFn = Apollo.MutationFunction<BookReservationMutation, BookReservationMutationVariables>;

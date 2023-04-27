@@ -316,7 +316,7 @@ export const resolvers: Resolvers = {
           data: bookingsOnTablesData   
         })
 
-        return 'hi'
+        return booking;
       } catch (err: any) {
         throw new GraphQLError(`${err.message}`, {
           extensions: {

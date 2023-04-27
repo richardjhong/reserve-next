@@ -60,7 +60,14 @@ export const resolvers: Resolvers = {
           );
         };
       
-        const searchTimesWithTables = await findAvailableTables({ day, time, restaurant })
+        const searchTimesWithTables = await findAvailableTables({ day, time, restaurant });
+
+        if (!searchTimesWithTables) 
+        throw new GraphQLError(`Invalid data provided`, {
+          extensions: {
+            code: 'BAD_USER_INPUT'
+          }
+        });
         
         const availabilities = searchTimesWithTables.map(t => {
           const sumSeats = t.tables.reduce((sum, table) => {
@@ -187,15 +194,21 @@ export const resolvers: Resolvers = {
         throw new GraphQLError(err.message);
       }
     },
-    bookReservation: async (_, { input }) => {
-      const { slug, day, time, partySize } = input;
+    bookReservation: async (_, { input }, { req }) => {
+      const { slug, day, time, partySize, occasion, request } = input;
       try {
 
         const restaurant = await prisma.restaurant.findUnique({
           where: {
             slug
+          },
+          select: {
+            id: true,
+            tables: true,
+            open_time: true,
+            close_time: true
           }
-        })
+        });
 
         if (!restaurant) 
         throw new GraphQLError(`Restaurant not found`, {
@@ -213,6 +226,108 @@ export const resolvers: Resolvers = {
             code: 'BAD_USER_INPUT'
           }
         });
+
+        const searchTimesWithTables = await findAvailableTables({ day, time, restaurant });
+
+        if (!searchTimesWithTables) 
+        throw new GraphQLError(`Invalid data provided`, {
+          extensions: {
+            code: 'BAD_USER_INPUT'
+          }
+        });
+
+        const searchTimeWithTables = searchTimesWithTables.find((t) => {
+          return t.date.toISOString() === new Date(`${day}T${time}`).toISOString()
+        });
+
+        if (!searchTimeWithTables)
+        throw new GraphQLError(`No availability, cannot book`, {
+          extensions: {
+            code: 'NO_MATCHING_DATA'
+          }
+        });
+        
+        interface TablesCount {
+          [key: number]: number[];
+        };
+        
+        const tablesCount: TablesCount = {};
+
+        searchTimeWithTables.tables.forEach(table => {
+          tablesCount[table.seats] ? tablesCount[table.seats].push(table.id) : tablesCount[table.seats] = [table.id];
+        });
+
+        const tablesToBook: number[] = [];
+        let seatsRemaining = parseInt(partySize);        
+
+        while (seatsRemaining > 0) {
+          if (seatsRemaining >= 3) {
+            if (tablesCount[4] && tablesCount[4].length) {
+              tablesToBook.push(tablesCount[4].shift() as number);
+              seatsRemaining -= 4;
+            } else if (tablesCount[2] && tablesCount[2].length) {
+              tablesToBook.push(tablesCount[2].shift() as number);
+              seatsRemaining -= 2;
+            } else {
+              break;
+            }
+          } else {
+            if (tablesCount[2] && tablesCount[2].length) {
+              tablesToBook.push(tablesCount[2].shift() as number);
+              seatsRemaining -= 2;
+            } else if (tablesCount[4] && tablesCount[4].length) {
+              tablesToBook.push(tablesCount[4].shift() as number);
+              seatsRemaining -= 4;
+            } else {
+              break;
+            }
+          }
+        };
+        
+
+        if (seatsRemaining > 0)
+        throw new GraphQLError(`Unable to accommodate party size with current vacant tables, please try reserving a different time or with a different party size`, {
+          extensions: {
+            code: 'NO_MATCHING_DATA'
+          }
+        });
+
+        const bearerToken = req.headers.get('authorization');
+        const user = await authorizedUser(bearerToken);
+
+        if (!user) 
+        throw new GraphQLError('You must be logged in as a valid user to book a table', {
+          extensions: {
+            code: 'UNAUTHENTICATED'
+          }
+        });
+
+        const { first_name: bkr_f_name, last_name: bkr_l_name, email: bkr_email, phone: bkr_phone } = user;
+
+        const booking = await prisma.booking.create({
+          data: {
+           num_of_people: parseInt(partySize),
+           booking_time: new Date(`${day}T${time}`),
+           bkr_email,
+           bkr_f_name,
+           bkr_l_name,
+           bkr_phone,
+           restaurant_id: restaurant.id,
+           bkr_occasion: occasion,
+           bkr_request: request
+          }
+        });
+
+        const bookingsOnTablesData = tablesToBook.map(table_id => {
+          return {
+            table_id,
+            booking_id: booking.id
+          };
+        });
+
+        await prisma.bookingsOnTable.createMany({
+          data: bookingsOnTablesData   
+        })
 
         return 'hi'
       } catch (err: any) {

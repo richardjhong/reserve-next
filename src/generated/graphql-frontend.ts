@@ -25,7 +25,9 @@ export type AvailabilitiesInput = {
 
 export type BookReservationInput = {
   day: Scalars['String'];
+  occasion?: InputMaybe<Scalars['String']>;
   partySize: Scalars['String'];
+  request?: InputMaybe<Scalars['String']>;
   slug: Scalars['String'];
   time: Scalars['String'];
 };

@@ -37,21 +37,35 @@ export const findAvailableTables = async ({ day, time, restaurant }: FindAvailab
      } 
     },
     select: {
+      id: true,
       num_of_people: true,
       booking_time: true,
       tables: true
     }
   });
 
-  const bookingTablesObj: {[key: string]: {[key: number]: true}} = {};
+  const bookingTablesObj: {[key: string]: Array<{[key: number]: true}>} = {};
 
   bookings.forEach(booking => {
-    bookingTablesObj[booking.booking_time.toISOString()] = booking.tables.reduce((obj, table) => {
-      return {
-        ...obj,
-        [table.table_id]: true
-      }
-    }, {});
+    // possibility of multiple tables booked under same time and day and share same key
+    const key = `${booking.booking_time.toISOString()}`;
+    if (!bookingTablesObj[key]) {
+      // if the key doesn't exist, create a new object with the tables
+      bookingTablesObj[key] = [booking.tables.reduce((obj, table) => {
+        return {
+          ...obj,
+          [table.table_id]: true
+        };
+      }, {})];
+    } else {
+      // if the key already exists, push a new object with the tables to the existing array
+      bookingTablesObj[key].push(booking.tables.reduce((obj, table) => {
+        return {
+          ...obj,
+          [table.table_id]: true
+        };
+      }, {}));
+    }
   });
 
   const { tables } = restaurant;
@@ -66,10 +80,12 @@ export const findAvailableTables = async ({ day, time, restaurant }: FindAvailab
 
   searchTimesWithTables.forEach(t => {
     t.tables = t.tables.filter(table => {
-      if (bookingTablesObj[t.date.toISOString()]) {
-        if (bookingTablesObj[t.date.toISOString()][table.id]) {
+      const bookingTables = bookingTablesObj[t.date.toISOString()];
+      if (bookingTables) {
+        const bookingTableIds = bookingTables.map(bookingTable => Object.keys(bookingTable)).flat();
+        if (bookingTableIds.includes(table.id.toString())) {
           return false;
-        }
+        };
       };
       return true;
     });

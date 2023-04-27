@@ -100,8 +100,8 @@ model Booking {
   bkr_phone       String
   bkr_f_name      String
   bkr_l_name      String
-  bkr_occasion    String  
-  bkr_request     String
+  bkr_occasion    String?  
+  bkr_request     String?
   restaurant_id   Int
   restaurant      Restaurant @relation(fields: [restaurant_id], references: [id])
   tables          BookingsOnTable[]

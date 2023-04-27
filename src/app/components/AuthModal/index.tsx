@@ -84,11 +84,11 @@ const AuthModal = ({ isSignin, onSuccess }: AuthModalProps)  =>{
           'jwt', 
           loginResult?.data?.loginUser?.response, 
           {
-            expires: new Date((new Date()).getTime() + ( 2 * 60 * 60 * 1000)), // 2 hours from creation
             // httpOnly: true,
             path: '/',
             sameSite: 'strict',
-            secure: process.env.NODE_ENV !== 'development'
+            secure: process.env.NODE_ENV !== 'development',
+            maxAge: 60 * 60 * 2 // 2 hours
           }
         );
       }
@@ -111,11 +111,11 @@ const AuthModal = ({ isSignin, onSuccess }: AuthModalProps)  =>{
           'jwt', 
           registerResult?.data?.registerUser?.response, 
           {
-            expires: new Date((new Date()).getTime() + ( 2 * 60 * 60 * 1000)), // 2 hours from creation
             // httpOnly: true,
             path: '/',
             sameSite: 'strict',
-            secure: process.env.NODE_ENV !== 'development'
+            secure: process.env.NODE_ENV !== 'development',
+            maxAge: 60 * 60 * 2 // 2 hours
           }
         );
       }

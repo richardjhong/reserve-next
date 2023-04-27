@@ -94,7 +94,7 @@ export const authorizedUser = async (bearerToken: string) => {
         first_name: true,
         last_name: true,
         email: true,
-        city: true
+        phone: true,
       }
     });  
     

@@ -91,6 +91,8 @@ export const typeDefs = gql`
     day: String!
     time: String!
     partySize: String!
+    occasion: String
+    request: String
   }
 
   type Query {

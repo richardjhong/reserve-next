@@ -24,6 +24,10 @@ export type AvailabilitiesInput = {
 };
 
 export type BookReservationInput = {
+  bkr_email: Scalars['String'];
+  bkr_f_name: Scalars['String'];
+  bkr_l_name: Scalars['String'];
+  bkr_phone: Scalars['String'];
   day: Scalars['String'];
   occasion?: InputMaybe<Scalars['String']>;
   partySize: Scalars['String'];
@@ -135,6 +139,13 @@ export type RegisterUserMutationVariables = Exact<{
 
 export type RegisterUserMutation = { __typename?: 'Mutation', registerUser: { __typename?: 'RegisterUserOutput', first_name: string, last_name: string, email: string, phone: string, city: string, response: string } };
 
+export type BookReservationMutationVariables = Exact<{
+  input: BookReservationInput;
+}>;
+
+
+export type BookReservationMutation = { __typename?: 'Mutation', bookReservation: string };
+
 export type ValidUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -220,6 +231,37 @@ export function useRegisterUserMutation(baseOptions?: Apollo.MutationHookOptions
 export type RegisterUserMutationHookResult = ReturnType<typeof useRegisterUserMutation>;
 export type RegisterUserMutationResult = Apollo.MutationResult<RegisterUserMutation>;
 export type RegisterUserMutationOptions = Apollo.BaseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables>;
+export const BookReservationDocument = gql`
+    mutation BookReservation($input: BookReservationInput!) {
+  bookReservation(input: $input)
+}
+    `;
+export type BookReservationMutationFn = Apollo.MutationFunction<BookReservationMutation, BookReservationMutationVariables>;
+
+/**
+ * __useBookReservationMutation__
+ *
+ * To run a mutation, you first call `useBookReservationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useBookReservationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [bookReservationMutation, { data, loading, error }] = useBookReservationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useBookReservationMutation(baseOptions?: Apollo.MutationHookOptions<BookReservationMutation, BookReservationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<BookReservationMutation, BookReservationMutationVariables>(BookReservationDocument, options);
+      }
+export type BookReservationMutationHookResult = ReturnType<typeof useBookReservationMutation>;
+export type BookReservationMutationResult = Apollo.MutationResult<BookReservationMutation>;
+export type BookReservationMutationOptions = Apollo.BaseMutationOptions<BookReservationMutation, BookReservationMutationVariables>;
 export const ValidUserDocument = gql`
     query ValidUser {
   validUser {

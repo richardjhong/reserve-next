@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import AuthModalInputs from './AuthModalInputs';
-import { useLoginUserMutation, useRegisterUserMutation, useValidUserQuery, ValidateLoginInput } from '@/generated/graphql-frontend';
+import { useLoginUserMutation, useRegisterUserMutation, ValidateLoginInput } from '@/generated/graphql-frontend';
 import { getClient } from '../../../../lib/client';
 import { CircularProgress, Alert } from '@mui/material';
 import { setCookie } from 'cookies-next';

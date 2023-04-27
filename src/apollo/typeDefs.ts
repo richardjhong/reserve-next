@@ -91,8 +91,13 @@ export const typeDefs = gql`
     day: String!
     time: String!
     partySize: String!
+    bkr_f_name: String!
+    bkr_l_name: String!
+    bkr_email: String!
+    bkr_phone: String!
     occasion: String
     request: String
+
   }
 
   type Query {

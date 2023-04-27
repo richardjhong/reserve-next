@@ -15,3 +15,7 @@ mutation RegisterUser($input: RegisterUserInput!) {
     response
   }
 }
+
+mutation BookReservation($input: BookReservationInput!) {
+  bookReservation(input: $input)
+}

@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import Link from "next/link";
 import { partySize, times } from "@/app/data";
 import { useCheckAvailabilityLazyQuery } from "@/generated/graphql-frontend";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getClient } from "../../../../../lib/client";
 import { CircularProgress } from '@mui/material';
 import { Time, convertToDisplayTime } from "../../../../../utils/convertToDisplayTime";

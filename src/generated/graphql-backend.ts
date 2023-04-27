@@ -23,6 +23,10 @@ export type AvailabilitiesInput = {
 };
 
 export type BookReservationInput = {
+  bkr_email: Scalars['String'];
+  bkr_f_name: Scalars['String'];
+  bkr_l_name: Scalars['String'];
+  bkr_phone: Scalars['String'];
   day: Scalars['String'];
   occasion?: InputMaybe<Scalars['String']>;
   partySize: Scalars['String'];

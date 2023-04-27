@@ -3,7 +3,6 @@ import { PrismaClient } from '@prisma/client';
 import { GraphQLError } from 'graphql'
 import bcrypt from 'bcrypt';
 import { assignToken, authorizedUser, validateInput } from '../../utils/authHelpers';
-import { times } from '@/app/data';
 import { dateScalar } from './typeDefs';
 import { findAvailableTables } from '../../utils/findAvailableTables';
 
@@ -195,7 +194,7 @@ export const resolvers: Resolvers = {
       }
     },
     bookReservation: async (_, { input }, { req }) => {
-      const { slug, day, time, partySize, occasion, request } = input;
+      const { slug, day, time, partySize, bkr_f_name, bkr_l_name, bkr_email, bkr_phone, occasion, request } = input;
       try {
 
         const restaurant = await prisma.restaurant.findUnique({
@@ -291,18 +290,6 @@ export const resolvers: Resolvers = {
             code: 'NO_MATCHING_DATA'
           }
         });
-
-        const bearerToken = req.headers.get('authorization');
-        const user = await authorizedUser(bearerToken);
-
-        if (!user) 
-        throw new GraphQLError('You must be logged in as a valid user to book a table', {
-          extensions: {
-            code: 'UNAUTHENTICATED'
-          }
-        });
-
-        const { first_name: bkr_f_name, last_name: bkr_l_name, email: bkr_email, phone: bkr_phone } = user;
 
         const booking = await prisma.booking.create({
           data: {

@@ -2,6 +2,7 @@ import { startServerAndCreateNextHandler } from '@as-integrations/next';
 import { ApolloServer } from '@apollo/server';
 import { schema } from '../../../apollo';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest } from 'next/server';
 
 type ApolloContext = {
   req: NextApiRequest
@@ -17,10 +18,10 @@ const handler = startServerAndCreateNextHandler(
   },  
 );
 
-export async function GET(request: NextApiRequest, response: NextApiResponse) {
-  return handler(request, response);
+export async function GET(request: NextRequest) {
+  return handler(request);
 };
 
-export async function POST(request: NextApiRequest, response: NextApiResponse) {
-  return handler(request, response);
+export async function POST(request: NextRequest) {
+  return handler(request);
 };

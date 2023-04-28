@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { getClient } from "../../../../../lib/client";
 import { useBookReservationMutation } from "@/generated/graphql-frontend";
-import { CircularProgress } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 interface FormProps {
   slug: string;
@@ -65,13 +67,14 @@ const Form = ({ slug, day, time, partySize }: FormProps) => {
   };
 
   return (
+    <>
+    {data && (
+    <div className="mt-10 flex justify-center items-center w-full">
+      <p>Reservation Confirmed</p>
+    </div>
+    )}
     <form className="mt-10 flex flex-wrap justify-between w-[660px]" onSubmit={handleSubmit}>
-      {data ? (
-      <div>
-        <h1>You are all booked up</h1>
-        <p>Enjoy your reservation</p>
-      </div>
-      ) : (
+      {!data && (
         <>
           <input
             type="text"
@@ -121,6 +124,9 @@ const Form = ({ slug, day, time, partySize }: FormProps) => {
             name="request"
             onChange={handleChangeInput}
           />
+          {error ? (<Alert severity="error" className="mb-4 bg-red-200 text-black w-full">
+            {error.message}
+          </Alert>) : null}
           <button
             className="bg-red-600 w-full p-3 h-16 text-white font-bold rounded disabled:bg-gray-400"
             disabled={disabled || loading}
@@ -129,12 +135,13 @@ const Form = ({ slug, day, time, partySize }: FormProps) => {
             {loading ? <CircularProgress color="inherit" /> : 'Complete reservation'}
           </button>
           <p className="mt-4 text-sm">
-            By clicking “Complete reservation” you agree to the OpenTable Terms
+            By clicking “Complete reservation” you agree to the DineReserve Terms
             of Use and Privacy Policy. Standard text message rates may apply.
             You may opt out of receiving text messages at any time.
           </p>
       </>)}
     </form>
+    </>
   )
 }
 

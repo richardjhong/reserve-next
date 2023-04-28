@@ -285,7 +285,7 @@ export const resolvers: Resolvers = {
         
 
         if (seatsRemaining > 0)
-        throw new GraphQLError(`Unable to accommodate party size with current vacant tables, please try reserving a different time or with a different party size`, {
+        throw new GraphQLError(`Unable to accommodate party size at requested time; please try reserving a different time`, {
           extensions: {
             code: 'NO_MATCHING_DATA'
           }

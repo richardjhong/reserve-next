@@ -164,7 +164,7 @@ const AuthModal = ({ isSignin, onSuccess }: AuthModalProps)  =>{
             </div>
             <div className="m-auto">
               <h2 className="text-2xl font-light text-center">
-                {renderContent("Log Into Your Account", "Create your OpenTable Account")}
+                {renderContent("Log Into Your Account", "Create your DineReserve Account")}
               </h2>
               <AuthModalInputs 
                 inputs={inputs} 

@@ -18,7 +18,6 @@ const Header = ({ day, time, partySize, restaurant }: HeaderProps) => {
 
   return (
     <div>
-      <h3 className="font-bold">You're almost done!</h3>
       <div className="mt-5 flex">
         <img
           src={main_image}

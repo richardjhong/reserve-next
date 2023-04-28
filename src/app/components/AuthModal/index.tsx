@@ -159,7 +159,6 @@ const AuthModal = ({ isSignin, onSuccess }: AuthModalProps)  =>{
               <div className="uppercase font-bold text-center pb-2 border-b mb-2 border-gray-400">
                 <p className="text-sm">
                   {renderContent("Sign In", "Create Account")}
-                  sign in
                 </p>
             </div>
             <div className="m-auto">

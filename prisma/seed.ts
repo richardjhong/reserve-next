@@ -7,6 +7,7 @@ type Data = {
 
 const seedData = async () => {
   await prisma.bookingsOnTable.deleteMany();
+  await prisma.booking.deleteMany();
   await prisma.table.deleteMany();
   await prisma.review.deleteMany();
   await prisma.item.deleteMany();
@@ -1036,11 +1037,11 @@ const seedData = async () => {
     ],
   });
 
-  const userLaith = await prisma.user.create({
+  const userTimothy = await prisma.user.create({
     data: {
-      first_name: "Laith",
-      last_name: "Harb",
-      email: "laith@hotmail.com",
+      first_name: "Timothy",
+      last_name: "Doe",
+      email: "timothy@hotmail.com",
       city: "ottawa",
       password: "$2b$10$I8xkU2nQ8EAHuVOdbMy9YO/.rSU3584Y.H4LrpIujGNDtmny9FnLu",
       phone: "1112223333",
@@ -1050,8 +1051,8 @@ const seedData = async () => {
   const userSandy = await prisma.user.create({
     data: {
       first_name: "Sandy",
-      last_name: "Yi",
-      email: "sandy_yi@hotmail.com",
+      last_name: "Wreath",
+      email: "sandy_wreath@hotmail.com",
       city: "toronto",
       password: "$2b$10$I8xkU2nQ8EAHuVOdbMy9YO/.rSU3584Y.H4LrpIujGNDtmny9FnLu",
       phone: "1112223333",
@@ -1083,68 +1084,68 @@ const seedData = async () => {
   await prisma.review.createMany({
     data: [
       {
-        first_name: "Laith",
-        last_name: "Harb",
+        first_name: "Timothy",
+        last_name: "Doe",
         text: "This place is amazing, it has some of the best dishes in the world. It is so so so good!!!",
         rating: 5,
         restaurant_id: vivaanId,
-        user_id: userLaith.id,
+        user_id: userTimothy.id,
       },
       {
-        first_name: "Laith",
-        last_name: "Harb",
+        first_name: "Timothy",
+        last_name: "Doe",
         text: "This food is so good! It is the fanciest thing I have ever seen in my short life",
         rating: 5,
         restaurant_id: bluRistoranteId,
-        user_id: userLaith.id,
+        user_id: userTimothy.id,
       },
       {
-        first_name: "Laith",
-        last_name: "Harb",
+        first_name: "Timothy",
+        last_name: "Doe",
         text: "Excellent food and service. Busy night, but everything was great! Highly recommend.",
         rating: 5,
         restaurant_id: elCatrinId,
-        user_id: userLaith.id,
+        user_id: userTimothy.id,
       },
       {
-        first_name: "Laith",
-        last_name: "Harb",
+        first_name: "Timothy",
+        last_name: "Doe",
         text: "Very nice place for a date night, the service was fast and friendly. The food was amazing.",
         rating: 4,
         restaurant_id: stelvioId,
-        user_id: userLaith.id,
+        user_id: userTimothy.id,
       },
       {
-        first_name: "Laith",
-        last_name: "Harb",
+        first_name: "Timothy",
+        last_name: "Doe",
         text: "Extremely disappointing in our experience.",
         rating: 2,
         restaurant_id: laBartolaId,
-        user_id: userLaith.id,
+        user_id: userTimothy.id,
       },
       {
-        first_name: "Laith",
-        last_name: "Harb",
+        first_name: "Timothy",
+        last_name: "Doe",
         text: "This place is amazing, it has some of the best dishes in the world. It is so so so good!!!",
         rating: 5,
         restaurant_id: elCatrinId,
-        user_id: userLaith.id,
+        user_id: userTimothy.id,
       },
       {
-        first_name: "Laith",
-        last_name: "Harb",
+        first_name: "Timothy",
+        last_name: "Doe",
         text: "As always, food was excellent. Waitress was friendly and prompt. We had just one problem in that our dessert order went rogue in the system and we waited ages for it to arrive.",
         rating: 5,
         restaurant_id: kamasutraIndianId,
-        user_id: userLaith.id,
+        user_id: userTimothy.id,
       },
       {
-        first_name: "Laith",
-        last_name: "Harb",
+        first_name: "Timothy",
+        last_name: "Doe",
         text: "Restaurant was loud and crowded. Food is not worth the price.",
         rating: 3,
         restaurant_id: eldoradoTacoId,
-        user_id: userLaith.id,
+        user_id: userTimothy.id,
       },
       {
         first_name: "Sandy",
@@ -1325,7 +1326,7 @@ const seedData = async () => {
       },
       {
         restaurant_id: RamaKrishnaId,
-        seats: 6
+        seats: 2
       },
     ],
   });

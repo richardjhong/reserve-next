@@ -78,7 +78,7 @@ const Form = ({ slug, day, time, partySize }: FormProps) => {
         <>
           <input
             type="text"
-            className="border rounded p-3 w-80 mb-4"
+            className="border rounded p-3 w-80 mb-4 border-gray-300"
             placeholder="First name"
             value={inputs.firstName}
             name="firstName"
@@ -86,7 +86,7 @@ const Form = ({ slug, day, time, partySize }: FormProps) => {
           />
           <input
             type="text"
-            className="border rounded p-3 w-80 mb-4"
+            className="border rounded p-3 w-80 mb-4 border-gray-300"
             placeholder="Last name"
             value={inputs.lastName}
             name="lastName"
@@ -94,7 +94,7 @@ const Form = ({ slug, day, time, partySize }: FormProps) => {
           />
           <input
             type="text"
-            className="border rounded p-3 w-80 mb-4"
+            className="border rounded p-3 w-80 mb-4 border-gray-300"
             placeholder="Phone number"
             value={inputs.phone}
             name="phone"
@@ -102,7 +102,7 @@ const Form = ({ slug, day, time, partySize }: FormProps) => {
           />
           <input
             type="text"
-            className="border rounded p-3 w-80 mb-4"
+            className="border rounded p-3 w-80 mb-4 border-gray-300"
             placeholder="Email"
             value={inputs.email}
             name="email"
@@ -110,7 +110,7 @@ const Form = ({ slug, day, time, partySize }: FormProps) => {
           />
           <input
             type="text"
-            className="border rounded p-3 w-80 mb-4"
+            className="border rounded p-3 w-80 mb-4 border-gray-300"
             placeholder="Occasion (optional)"
             value={inputs.occasion}
             name="occasion"
@@ -118,7 +118,7 @@ const Form = ({ slug, day, time, partySize }: FormProps) => {
           />
           <input
             type="text"
-            className="border rounded p-3 w-80 mb-4"
+            className="border rounded p-3 w-80 mb-4 border-gray-300"
             placeholder="Requests (optional)"
             value={inputs.request}
             name="request"

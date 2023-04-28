@@ -193,7 +193,7 @@ export const resolvers: Resolvers = {
         throw new GraphQLError(err.message);
       }
     },
-    bookReservation: async (_, { input }, { req }) => {
+    bookReservation: async (_, { input }) => {
       const { slug, day, time, partySize, bkr_f_name, bkr_l_name, bkr_email, bkr_phone, occasion, request } = input;
       try {
 

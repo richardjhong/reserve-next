@@ -17,7 +17,8 @@ export const getClient = () => {
   });
 
   const dynamicUri = () => {
-    return process.env.NODE_ENV === 'production' ? 'https://task-tracker-mate.herokuapp.com/api/graphql' :
+    return process.env.NODE_ENV === 'production' ? `https://reserve-next-5ezg9an5f-richardjhong.vercel.app
+    /api/graphql` :
     'http://localhost:3000/api/graphql'
   };
 

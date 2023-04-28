@@ -16,12 +16,17 @@ export const getClient = () => {
     }
   });
 
+  const dynamicUri = () => {
+    return process.env.NODE_ENV === 'production' ? 'https://task-tracker-mate.herokuapp.com/api/graphql' :
+    'http://localhost:3000/api/graphql'
+  };
+
   // create a new client if there's no existing one
   // or if we are running on the server.
   if (!client || typeof window === "undefined") {
     client = new ApolloClient({
       link: authLink.concat(new HttpLink({
-        uri: "http://localhost:3000/api/graphql",
+        uri: dynamicUri(),
         credentials: 'include'
       })),
       cache: new InMemoryCache(),
